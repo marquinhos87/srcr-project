@@ -38,7 +38,7 @@ registarUtente(Id,N,I,C).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado registarServiço: Id,Descrição,Instituição,Cidade -> {V,F}
 
-registarServiço(Id,D,I,C).
+registarServico(Id,D,I,C).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado registarConsulta: Data,IdU,IdS,Custo -> {V,F}
@@ -53,7 +53,7 @@ removerCliente(Id).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado removerServiço: Id -> {V,F}
 
-removerServiço(Id).
+removerServico(Id).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado removerConsulta: Data,IdU,IdS -> {V,F}
