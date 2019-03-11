@@ -11,6 +11,7 @@
 :- set_prolog_flag( single_var_warnings,off ).
 :- set_prolog_flag( unknown,fail ).
 
+
 % funções base para trabalho
 
 % lê predicados da linha
@@ -26,9 +27,16 @@ file_to_list(Q,[Q|L]) :- read(N), file_to_list(N,L).
 
 write_on_file(FileName,Lista) :- tell(FileName), writeList(Lista), told, print(Lista).
 
+
 writeList([]) :- write('.').
 writeList([A|B]) :- write(A), writeList(B).
 
+regista(File,X) :- see(File), repeat, read(Q), file_to_list(Q,L), seen, inserir_final(X,L), write_on_file(File,L).
+
+inserir_final([], Y, [Y]).         % Se a lista estava vazia, o resultado é [Y]
+inserir_final([I|R], Y, [I|R1]) :- inserir_final(R, Y, R1).       % Inserindo o elemento Y no final do antigo resto
+
+()
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado registarUtente: Id,Nome,Idade,Cidade -> {V,F}
