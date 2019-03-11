@@ -40,15 +40,15 @@ consulta(data(10,10,98),4,3,30)
 
 % remove repetidos
 
-takeOutReps([],E).
+takeOutReps([],_).
 takeOutReps([A|B],E) :- add(A,E), takeOutReps(B,E).
 
 
 % adiciona a uma lista de elementos um elemento que esta não tem
 
 add(A,[]) :- (A,[]).
-add(A,[A|E]).
-add(A,[B|E]) :- add(A,E).
+add(A,[A|_]).
+add(A,[_|E]) :- add(A,E).
 
 % -------------       Funções auxiliares       ----------------------
 
@@ -57,7 +57,6 @@ add(A,[B|E]) :- add(A,E).
 
 
 % -------------       2º Tópico       ----------------------
-
 
 
 % -------------       2º Tópico       ----------------------
@@ -69,7 +68,7 @@ add(A,[B|E]) :- add(A,E).
 % dá todos os serviços existentes
 
 lerServicos(X,E) :- servicos(X,L),
-                    findall((C),member(servico(_,C,_,_),L),D), takeOutReps(D,E).
+                    findall((C),member(servico(_,_,C,_),L),D), takeOutReps(D,E).
 
 
 % -------------       3º Tópico       ----------------------
@@ -135,9 +134,9 @@ consultaData(data(D,M,A),D) :- consultas(L), findall((data(D,M,A),IdUtente,IdIns
 consultaCustosInferiores(CustoMax,D) :- consultas(L), menores(CustoMax,L,D).
 
 
-menores(A,[],G).
+menores(_,[],_).
 menores(A,[consulta(C,D,E,F)|B],G) :- A >= F, menores(A,B,(consulta(C,D,E,F),G)).
-menores(A,[consulta(C,D,E,F)|B],G) :- A < F, menores(A,B,G).
+menores(A,[consulta(_,_,_,F)|B],G) :- A < F, menores(A,B,G).
 
 % -------------       4º Tópico       ----------------------
 
