@@ -11,6 +11,8 @@
 :- set_prolog_flag( single_var_warnings,off ).
 :- set_prolog_flag( unknown,fail ).
 
+:- dynamic(utente/4).
+
 % Extenção do predicado utente:  IdUt, Nome, Idade, Cidade -> { V, F }
 
 utente(1,joao,22,lisboa).
