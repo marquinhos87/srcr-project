@@ -43,14 +43,18 @@ consulta(data(10,10,98),4,3,30).
 comprimento([],0).
 comprimento([H|T], R) :- comprimento(T,N), R is N + 1.
 
-existe(IDAUX,S) :- findall( (ID,N,I,C) , (utente(ID,N,I,C), ID == IDAUX) , S).
+filtrarUtentesPorId(IDAUX,S) :- findall( (ID,N,I,C) , (utente(ID,N,I,C), ID == IDAUX) , S).
+
+naoExiste(IDAUX) :- filtrarUtentesPorId(IDAUX,R), comprimento(R, S), S == 0.
+
+
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado registarUtente: Id,Nome,Idade,Cidade -> {V,F}
 
 %	AINDA NÃO ESTÁ A FUNCIONAR!!!
 
-registarUtente(Id,N,I,C) :- existe(Id,R), comprimento(R, S), S == 0, utente(Id,N,I,C).
+registarUtente(ID,N,I,C) :- naoExiste(ID) , assertz(utente(ID,N,I,C)).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado registarServiço: Id,Descrição,Instituição,Cidade -> {V,F}
