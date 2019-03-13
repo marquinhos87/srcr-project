@@ -31,16 +31,16 @@ consulta(data(10,10,98),4,3,30).
 %Tópico 6
 %Extensão do predicado de identificarUtentes: Tipo,Nome,Lista -> {V,F}
 
-identificarUtentes(Serv,L) :- solucoes(utente(A,B,C,D),(consulta(_,A,G,_),Serv == G),L).
-identificarUtentes(Inst,L) :- solucoes(utente(A,B,C,D),(consulta(_,A,G,_),servico(G,_,K,_),Inst == K),L).
+identificarUtentes(Serv,L) :- solucoes(utente(A,B,C,D),consulta(_,A,Serv,_),L).
+identificarUtentes(Inst,L) :- solucoes(utente(A,B,C,D),(consulta(_,A,G,_),servico(G,_,Inst,_)),L).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Tópico 7
 %Extensão do predicado de identificarServicos: Tipo,Nome,Lista -> {V,F}
 
-identificarServicos(Uten,L) :- solucoes(servico(A,B,C,D),(consulta(_,F,A,_),Uten == F),L). 
-identificarServicos(Inst,L) :- solucoes(servico(A,B,C,D),(servico(_,_,G,_),Inst == G),L).
-identificarServicos(Loca,L) :- solucoes(servico(A,B,C,D),(servico(_,_,_,H),Loca == H),L).
+identificarServicos(Uten,L) :- solucoes(servico(A,B,C,D),consulta(_,Uten,A,_),L). 
+identificarServicos(Inst,L) :- solucoes(servico(A,B,C,D),servico(_,_,Inst,_),L).
+identificarServicos(Loca,L) :- solucoes(servico(A,B,C,D),servico(_,_,_,Loca),L).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Extensão do predicado solucoes: Termo,Condicao,Lista -> {V,F}
