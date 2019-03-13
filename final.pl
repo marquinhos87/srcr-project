@@ -14,9 +14,9 @@
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % tipos de factos
 
-:- dynamic(utentes/4).
-:- dynamic(servicos/4).
-:- dynamic(consultas/5).
+:- dynamic(utente/4).
+:- dynamic(servico/4).
+:- dynamic(consulta/5).
 :- dynamic(data/3).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
@@ -45,17 +45,12 @@ consulta(5,data(10,10,98),4,3,30).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %funcoes auxiliares
 
-%Extensão do predicado de aad: Termo,Lista -> {V,F}
-%adiciona a uma lista de elementos um elemento que esta não tem
-add(A,[]) :- (A,[]).
-add(A,[A|_]).
-add(A,[_|E]) :- add(A,E).
 
 %Extensão do predicado de takeOutReps: Lista,Termo -> {V,F}
 %remove repetidos
 takeOutReps([],_).
-takeOutReps([A|B],E) :- add(A,[A|B],E), takeOutReps(B,E).
-
+takeOutReps([A|B],E) :- nTem(A,E), takeOutReps(B,[A|E]).
+takeOutReps([A|B],[A|E]) :- takeOutReps(B,E).
 %Extensão do predicado de entre: Numero,Numero,Numero -> {V,F}
 %compara se o ultimo inteiro está entre os dois primeiros
 entre(A,B,C) :- A =< C, B >= C.
@@ -124,7 +119,7 @@ involucao(Termo) :- solucoes(Invariante, -Termo::Invariante,Lista),
 registarUtente(ID,N,I,C) :- evolucao(utente(ID,N,I,C)).
 
 % Extensao do predicado registarServiço: Id,Descrição,Instituição,Cidade -> {V,F}
-registarServico(IDS,D,I,C) :- evolucao(servico(IDS,D,I,C)).
+registarServico(ID,D,I,C) :- evolucao(servico(ID,D,I,C)).
 
 % Extensao do predicado registarConsulta: Data,IdU,IdS,Custo -> {V,F}
 registarConsulta(ID,D,IU,IS,C) :- evolucao(consulta(ID,D,IU,IS,C)).
@@ -136,7 +131,7 @@ registarConsulta(ID,D,IU,IS,C) :- evolucao(consulta(ID,D,IU,IS,C)).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Topico 3
 %Extensão do predicado de lerServicos: Lista -> {V,F}
-lerServicos(E) :- solucoes((C),(servico(_,_,C,_),D)), takeOutReps(D,E).
+lerServicos(E) :- findall((C),(servico(_,_,C,_)),D), takeOutReps(D,E).
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
