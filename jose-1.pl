@@ -14,7 +14,7 @@
 :- op( 900,xfy,'::' ).
 :- dynamic(utente/4).
 :- dynamic(servico/4).
-:- dynamic(consulta/4).
+:- dynamic(consulta/5).
 
 % Extenção do predicado utente:  IdUt, Nome, Idade, Cidade -> { V, F }
 
@@ -49,6 +49,11 @@ consulta(5, data(10,10,98),4,3,30).
 						comprimento( S,N ),
 						N == 1
 						).
+
++consulta(ID,D,IDU,IDS,C) :: (solucoes((ID,IDU,IDS), (utente(IDU,_,_,_), servico(IDS,_,_,_)), S),
+						comprimento( S,N),
+						N == 1).
+
 
 +servico(ID,_,_,_) :: (solucoes( (ID,_,_,_), (servico(ID,_,_,_)), S),
 						comprimento( S,N ),
