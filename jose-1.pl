@@ -39,13 +39,7 @@ consulta(3, data(10,10,98),2,2,40).
 consulta(4, data(10,10,98),3,2,40).
 consulta(5, data(10,10,98),4,3,30).
 
-%	funções auxiliares:
-
-comprimento([],0).
-comprimento([H|T], R) :- comprimento(T,N), R is N + 1.
-
 % Invariante Estrutural:  nao permitir a insercao de conhecimento repetido
-%
 
 +utente(ID,_,_,_) :: (solucoes( (ID,_,_,_), (utente(ID,_,_,_)), S),
 					 comprimento( S,N ),
@@ -61,7 +55,6 @@ comprimento([H|T], R) :- comprimento(T,N), R is N + 1.
 						N == 1
 						).
 
-
 comprimento([],0).
 comprimento([H|T], R) :- comprimento(T,N), R is N + 1.
 
@@ -71,18 +64,14 @@ teste([I|L]) :- I,teste(L).
 insercao(T) :- assert(T).
 insercao(T) :- retract(T), !, fail.
 
-remocao(T) :- retract(T).
-remocao(T) :- assert(T), !, fail.
-
-nao(T) :- T,insucesso.
-nao(T).
-
 solucoes(N,Condicao,S) :- findall(N,Condicao,S).
 
 evolucao( Termo ) :- solucoes(Invariante, +Termo::Invariante, Lista),
 					insercao(Termo),
 					teste(Lista).
 
+sum([],0).
+sum([H|T],R) :- sum(T, S), R is S + H. 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado registarUtente: Id,Nome,Idade,Cidade -> {V,F}
@@ -102,22 +91,23 @@ registarConsulta(ID,D,IU,IS,C) :- evolucao(consulta(ID,D,IU,IS,C)).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado custoCuidadosPorUtente: Id, R -> {V,F}
 
-sum([],0).
-sum([H|T],R) :- sum(T, S), R is S + H. 
-
 custoCuidadosPorUtente(ID, R) :- solucoes(C,((consulta(_,_,ID,_,C))), S), sum(S,R).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado custoCuidadosPorServico: ID, R -> {V,F}
 
 custoCuidadosPorServico(ID, R) :- solucoes(C,(consulta(_,_,_,ID,C)), S), sum(S,R).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado custoCuidadosPorServico: ID, R -> {V,F}
 
 custoCuidadosPorInstituicao(I,R) :- solucoes(C,(servico(IDV,_,I,_), consulta(_,_,_,IDV,C)), S), sum(S,R).
 
-% Extensao do predicado custoCuidadosPorServico: ID, R -> {V,F}
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensao do predicado custoCuidadosPorData: D,M,A,R -> {V,F}
 
 custoCuidadosPorData(D,M,A,R) :- solucoes(C,(consulta(_,data(D,M,A),_,_,C)), S), sum(S,R).
+
 
 
 
