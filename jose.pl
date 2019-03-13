@@ -54,8 +54,6 @@ naoExiste(IDAUX) :- filtrarUtentesPorId(IDAUX,R), comprimento(R, S), S == 0.
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado registarUtente: Id,Nome,Idade,Cidade -> {V,F}
 
-%	AINDA NÃO ESTÁ A FUNCIONAR!!!
-
 registarUtente(ID,N,I,C) :- naoExiste(ID) , assertz(utente(ID,N,I,C)).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
