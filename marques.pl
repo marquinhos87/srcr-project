@@ -14,10 +14,10 @@ utente(5,quim,25,braga).
 
 % Extenção do predicado servico: IdServ, Descrição, Instituição, Cidade -> { V, F }
 
-servico(1,urgencias,sos1,Braga).
-servico(2,autopsias,sos2,Braga).
-servico(3,geral,sos2,Braga).
-servico(4,especialidade,sos3,Braga).
+servico(1,urgencias,sos1,braga).
+servico(2,autopsias,sos2,braga).
+servico(3,geral,sos2,braga).
+servico(4,especialidade,sos3,braga).
 
 % Extenção do predicado consulta: Data, IdUt, IdServ, Custo -> { V, F }
 
