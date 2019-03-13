@@ -61,6 +61,7 @@ comprimento([H|T], R) :- comprimento(T,N), R is N + 1.
 				  N == 1
                   ).
 
+
 comprimento([],0).
 comprimento([H|T], R) :- comprimento(T,N), R is N + 1.
 
