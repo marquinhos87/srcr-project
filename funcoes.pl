@@ -32,6 +32,7 @@ consulta(data(24,10,98),1,1,23).
 consulta(data(10,10,98),2,2,40).
 consulta(data(10,10,98),3,2,40).
 consulta(data(10,10,98),4,3,30).
+consulta(data(10,12,98),4,3,30).
 
 % -------------       Funções auxiliares       ----------------------
 
@@ -46,6 +47,8 @@ takeOutReps([A|B],E) :- add(A,[A|B],E), takeOutReps(B,E).
 add(A,[]) :- (A,[]).
 add(A,[A|_]).
 add(A,[_|E]) :- add(A,E).
+
+entre(A,B,C) :- A =< C, B >= C.
 
 % -------------       Funções auxiliares       ----------------------
 
@@ -124,9 +127,10 @@ consultaInstituicao(IdInstituicao,D) :- findall((Data,IdUtente,IdInstituicao,Cus
 
 consultaData(data(D,M,A),E) :- findall((data(D2,M2,A2),IdUtente,IdInstituicao,Custo), (consulta(data(D2,M2,A2),IdUtente,IdInstituicao,Custo),D2 == D,M2 == M, A2 == A),E).
 
+
 % entre 2 datas:
 
-% consultaDatas(data(D1,M1,A1),data(D2,M2,A2),E) :- findall((data(D3,M3,A3),IdUtente,IdInstituicao,Custo), (consulta(data(D3,M3,A3),IdUtente,IdInstituicao,Custo),(A3 < A2, A3 > A1; A3 == A1, M3 > M1; A3 == A2 , M3 < M2;A3 == A1, M3 == M1 , D3 >= D1; A3 == A2 , M3 == M2, D3 =< D2)),E).
+consultaDatas(data(D1,M1,A1),data(D2,M2,A2),E) :- findall((data(D3,M3,A3),IdUtente,IdInstituicao,Custo), (consulta(data(D3,M3,A3),IdUtente,IdInstituicao,Custo),entre(A1*365+M1*30+D1,A2*365+M2*30+D2,A3*365+M3*30+D3)),E).
 
 % com preço inferior ou igual a X:
 
