@@ -100,17 +100,24 @@ registarServico(IDS,D,I,C) :- evolucao(servico(IDS,D,I,C)).
 registarConsulta(ID,D,IU,IS,C) :- evolucao(consulta(ID,D,IU,IS,C)).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Extensao do predicado removerCliente: Id -> {V,F}
+% Extensao do predicado custoCuidadosPorUtente: Id, R -> {V,F}
 
-removerCliente(Id).
+sum([],0).
+sum([H|T],R) :- sum(T, S), R is S + H. 
 
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Extensao do predicado removerServiço: Id -> {V,F}
+custoCuidadosPorUtente(ID, R) :- solucoes(C,((consulta(_,_,ID,_,C))), S), sum(S,R).
 
-removerServico(Id).
+% Extensao do predicado custoCuidadosPorServico: ID, R -> {V,F}
 
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Extensao do predicado removerConsulta: Data,IdU,IdS -> {V,F}
+custoCuidadosPorServico(ID, R) :- solucoes(C,(consulta(_,_,_,ID,C)), S), sum(S,R).
 
-removerConsulta(D,IU,IS,C).
+% Extensao do predicado custoCuidadosPorServico: ID, R -> {V,F}
+
+custoCuidadosPorInstituicao(I,R) :- solucoes(C,(servico(IDV,_,I,_), consulta(_,_,_,IDV,C)), S), sum(S,R).
+
+% Extensao do predicado custoCuidadosPorServico: ID, R -> {V,F}
+
+custoCuidadosPorData(D,M,A,R) :- solucoes(C,(consulta(_,data(D,M,A),_,_,C)), S), sum(S,R).
+
+
 
