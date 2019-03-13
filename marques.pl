@@ -1,8 +1,8 @@
 % tipos de factos
 
-:- dynamic(utentes/1).
-:- dynamic(servicos/1).
-:- dynamic(consultas/1).
+:- dynamic(utentes/4).
+:- dynamic(servicos/4).
+:- dynamic(consultas/4).
 
 % Extenção do predicado utente: IdUt,Nome,Idade,Cidade -> {V,F}
 
