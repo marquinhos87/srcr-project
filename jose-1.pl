@@ -11,7 +11,6 @@
 :- set_prolog_flag( single_var_warnings,off ).
 :- set_prolog_flag( unknown,fail ).
 
-
 :- op( 900,xfy,'::' ).
 :- dynamic(utente/4).
 :- dynamic(servico/4).
@@ -29,10 +28,10 @@ utente(5,quim,25,braga).
 
 % Extenção do predicado servico: IdServ, Descrição, Instituição, Cidade -> { V, F }
 
-servico(1,urgencias,sos1,braga).
-servico(2,autopsias,sos2,braga).
-servico(3,geral,sos2,braga).
-servico(4,especialidade,sos3,braga).
+servico(1,urgencias,sos1,Braga).
+servico(2,autopsias,sos2,Braga).
+servico(3,geral,sos2,Braga).
+servico(4,especialidade,sos3,Braga).
 
 
 % Extenção do predicado consulta: Data, IdUt, IdServ, Custo -> { V, F }
@@ -49,18 +48,38 @@ consulta(data(10,10,98),4,3,30).
 comprimento([],0).
 comprimento([H|T], R) :- comprimento(T,N), R is N + 1.
 
-filtrarUtentesPorId(IDAUX,S) :- findall( (ID,N,I,C) , (utente(ID,N,I,C), ID == IDAUX) , S).
+% Invariante Estrutural:  nao permitir a insercao de conhecimento repetido
+%
 
-naoExiste(IDAUX) :- filtrarUtentesPorId(IDAUX,R), comprimento(R, S), S == 0.
++utente(ID,N,I,C) :: (solucoes( (ID,N,I,C), (utente(ID,N,I,C)), S),
+					 comprimento( S,N ),
+					 N == 1
+					 ).
 
++filho( F,P ) :: (solucoes( (F,P),(filho( F,P )),S ),
+                  comprimento( S,N ), 
+				  N == 1
+                  ).
 
+comprimento([],0).
+comprimento([H|T], R) :- comprimento(T,N), R is N + 1.
+
+teste([]).
+teste([I|L]) :- I,teste(L).
+
+insercao(T) :- assert(T).
+insercao(T) :- retract(T), !, fail.
+
+solucoes(N,Condicao,S) :- findall(N,Condicao,S).
+
+evolucao( Termo ) :- solucoes(Invariante, +Termo::Invariante, Lista),
+					 insercao(Termo),
+					 teste(Lista).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado registarUtente: Id,Nome,Idade,Cidade -> {V,F}
 
-%	AINDA NÃO ESTÁ A FUNCIONAR!!!
-
-registarUtente(ID,N,I,C) :- naoExiste(ID) , assertz(utente(ID,N,I,C)).
+registarUtente(ID,N,I,C) = evolucao(utente(ID,N,I,C)).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado registarServiço: Id,Descrição,Instituição,Cidade -> {V,F}
@@ -85,7 +104,5 @@ removerServico(Id).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado removerConsulta: Data,IdU,IdS -> {V,F}
 
-filtroConsulta(DAUX,IUAUX,ISAUX,CAUX, S) :- findall( (D,IU,IS,C), (consulta(D,IU,IS,C), D == DAUX, IU == IUAUX, IS == ISAUX, C == CAUX), S).
-
-removerConsulta(D,IU,IS,C) :- filtroConsulta(D,IU,IS,C,S), retract(S).
+removerConsulta(D,IU,IS,C).
 
