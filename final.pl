@@ -149,9 +149,8 @@ involucao(Termo) :- solucoes(I, -Termo::I,Lista),
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
-%Invariantes Referenciais: nao permitir a remocao de conhecimento que tenha dependências
-
-%Invariante Referenciais para verificar se já existe o Utente e/ou Serviço
+%Invariantes Referenciais: 
+%para verificar se já existe o Utente e/ou Serviço
 +consulta(ID,_,IDU,IDS,IM,_) :: (solucoes(ID, (utente(IDU,_,_,_), servico(IDS,_,I,_), medico(IM,_,_,_,I)), S),
 								comprimento(S,N),
 								N == 1
@@ -168,6 +167,10 @@ involucao(Termo) :- solucoes(I, -Termo::I,Lista),
 					   comprimento( S,N ), 
 					   N == 0
                   	   ).
+
+-consulta(,,_,_,_) :: (no).
+
+
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
@@ -254,10 +257,10 @@ servPrestPorInst(Inst, S) :- solucoes(servico(IdServ, Desc, Inst, Cid),(servico(
 servPrestPorCidade(Cid, S) :- solucoes(servico(IdServ, Desc, Inst, Cid),(servico(IdServ, Desc, Inst, Cid)),S).
 
 %Extensão do predicado de servPrestPorDatas: Data,Data,Lista -> {V,F}
-servPrestPorDatas(data(D1,M1,A1),data(D2,M2,A2), S) :- solucoes(servico(IdServ, Desc, Inst, Cid),(servico(IdServ, Desc, Inst, Cid),consulta(data(D3,M3,A3),_,IdServ,_),entre(A1*365+M1*30+D1,A2*365+M2*30+D2,A3*365+M3*30+D3)),S).
+servPrestPorDatas(data(D1,M1,A1),data(D2,M2,A2), S) :- solucoes(servico(IdServ, Desc, Inst, Cid),(servico(IdServ, Desc, Inst, Cid),consulta(data(D3,M3,A3),_,IdServ,_,_),entre(A1*365+M1*30+D1,A2*365+M2*30+D2,A3*365+M3*30+D3)),S).
 
 %Extensão do predicado de servPrestPorCusto: Custo,Lista -> {V,F}
-servPrestPorCusto(Custo, S) :- solucoes(servico(IdServ, Desc, Inst, Cid),(servico(IdServ, Desc, Inst, Cid), consulta(_,_,IdServ,Custo)),S).
+servPrestPorCusto(Custo, S) :- solucoes(servico(IdServ, Desc, Inst, Cid),(servico(IdServ, Desc, Inst, Cid), consulta(_,_,IdServ,_,Custo)),S).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
