@@ -80,8 +80,13 @@ medico(4,joaquim, 44, cirugia, hospital_braga).
 %Extensão do predicado de takeOutReps: Lista,Termo -> {V,F}
 %remove repetidos
 takeOutReps([],_).
-takeOutReps([A|B],E) :- nTem(A,E), takeOutReps(B,[A|E]).
-takeOutReps([A|B],[A|E]) :- takeOutReps(B,E).
+takeOutReps([A|B],E) :- add(A,E), takeOutReps(B,E).
+
+% Extensão do predicado de add: Termo,Lista -> {V,F}
+%garante que a lista tem o termo passado
+add(A,[A|_]).
+add(A,[_|E]) :- add(A,E).
+
 %Extensão do predicado de entre: Numero,Numero,Numero -> {V,F}
 %compara se o ultimo inteiro está entre os dois primeiros
 entre(A,B,C) :- A =< C, B >= C.
@@ -227,25 +232,25 @@ servicoInstituicao(Inst,D) :- solucoes((Id,Nome),servico(Id,Nome,Inst,_),D).
 servicoLocal(Local,D) :- solucoes((Id,Nome), servico(Id,Nome,_,Local),D).
 
 %Extensão do predicado de consultaCustosSuperiores: CustoMax,Lista -> {V,F}
-consultaID(Id,D) :- solucoes((Id,Data,IdUtente,IdServ,Custo), consulta(Id,Data,IdUtente,IdServ,Custo),D).
+consultaID(Id,D) :- solucoes((Id,Data,IdUtente,IdServ,IdMed,Custo), consulta(Id,Data,IdUtente,IdServ,IdMed,Custo),D).
 
 %Extensão do predicado de consultaUtente: Utente,Lista -> {V,F}
-consultaUtente(IdUtente,D) :- solucoes((Id,Data,IdUtente,IdServ,Custo), consulta(Id,Data,IdUtente,IdServ,Custo),D).
+consultaUtente(IdUtente,D) :- solucoes((Id,Data,IdUtente,IdServ,IdMed,Custo), consulta(Id,Data,IdUtente,IdServ,IdMed,Custo),D).
 
 %Extensão do predicado de consultaInstituicao: Instituicao,Lista -> {V,F}
-consultaInstituicao(IdInstituicao,D) :- solucoes((Id,Data,IdUt,IdInstituicao,Custo), consulta(Id,Data,IdUt,IdInstituicao,Custo),D).
+consultaInstituicao(IdInstituicao,D) :- solucoes((Id,Data,IdUt,IdInstituicao,IdMed,Custo), consulta(Id,Data,IdUt,IdInstituicao,IdMed,Custo),D).
 
 %Extensão do predicado de consultaData: Data,Lista -> {V,F}
-consultaData(data(D,M,A),E) :- solucoes((Id,data(D2,M2,A2),IdUt,IdServ,Custo), (consulta(Id,data(D2,M2,A2),IdUt,IdServ,Custo),D2 == D,M2 == M, A2 == A),E).
+consultaData(data(D,M,A),E) :- solucoes((Id,data(D2,M2,A2),IdUt,IdServ,IdMed,Custo), (consulta(Id,data(D2,M2,A2),IdUt,IdServ,IdMed,Custo),D2 == D,M2 == M, A2 == A),E).
 
 %Extensão do predicado de consultaDatas: Data,Data,Lista -> {V,F}
-consultaDatas(data(D1,M1,A1),data(D2,M2,A2),E) :- solucoes((Id,data(D3,M3,A3),IdUt,IdServ,Custo), (consulta(Id,data(D3,M3,A3),IdUt,IdServ,Custo),entre(A1*365+M1*30+D1,A2*365+M2*30+D2,A3*365+M3*30+D3)),E).
+consultaDatas(data(D1,M1,A1),data(D2,M2,A2),E) :- solucoes((Id,data(D3,M3,A3),IdUt,IdServ,IdMed,Custo), (consulta(Id,data(D3,M3,A3),IdUt,IdServ,IdMed,Custo),entre(A1*365+M1*30+D1,A2*365+M2*30+D2,A3*365+M3*30+D3)),E).
 
 %Extensão do predicado de consultaCustosInferiores: CustoMax,Lista -> {V,F}
-consultaCustosInferiores(CustoMax,D) :- solucoes((Id,Data,IdUt,IdServ,Custo),(consulta(Id,Data,IdUt,IdServ,Custo),Custo =< CustoMax),D).
+consultaCustosInferiores(CustoMax,D) :- solucoes((Id,Data,IdUt,IdServ,IdMed,Custo),(consulta(Id,Data,IdUt,IdServ,IdMed,Custo),Custo =< CustoMax),D).
 
 %Extensão do predicado de consultaCustosSuperiores: CustoMax,Lista -> {V,F}
-consultaCustosSuperiores(CustoMax,D) :- solucoes((Id,Data,IdUt,IdServ,Custo),(consulta(Id,Data,IdUt,IdServ,Custo),Custo >= CustoMax),D).
+consultaCustosSuperiores(CustoMax,D) :- solucoes((Id,Data,IdUt,IdServ,IdMed,Custo),(consulta(Id,Data,IdUt,IdServ,IdMed,Custo),Custo >= CustoMax),D).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
