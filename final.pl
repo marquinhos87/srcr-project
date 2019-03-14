@@ -15,8 +15,10 @@
 %Tipos de factos
 :- dynamic(utente/4).
 :- dynamic(servico/4).
-:- dynamic(consulta/5).
+:- dynamic(consulta/6).
 :- dynamic(data/3).
+:- dynamic(medico/5).
+
 
 :- op( 900,xfy,'::' ).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
@@ -31,7 +33,7 @@ utente(5,quim,25,braga).
 utente(6,henrique,20,braga).
 utente(7,ricardo,20,braga).
 utente(8,bruno,44,aveiro).
-utente(9,nuno,33,sagres).
+utente(9,nuno,33,porto).
 utente(10,pedro,70,coimbra).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
@@ -55,13 +57,22 @@ servico(15,radio_grafia,hospital_braga,braga).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Extenção do predicado consulta: Id,Data,IdUt,IdServ,Custo -> {V,F}
-consulta(1,data(11,2,2019),1,1,15).
-consulta(2,data(12,3,2018),2,2,20).
-consulta(3,data(13,1,2019),3,3,25).
-consulta(4,data(25,8,2017),4,1,15).
-consulta(5,data(2,10,2007),5,15,30).
+%Extenção do predicado consulta: Id,Data,IdUt,IdServ,IdMedico, Custo -> {V,F}
+consulta(1,data(11,2,2019),1,1,1,15).
+consulta(2,data(12,3,2018),2,2,4,20).
+consulta(3,data(13,1,2019),3,3,1,25).
+consulta(4,data(25,8,2017),4,1,4,15).
+consulta(5,data(2,10,2007),5,15,1,30).
+consulta(6,data(17,5,2018),9,8,2,30).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%Extenção do predicado medico: Id,Nome, Idade, Especialidade, Instituição -> {V,F}
+medico(1,jose,30,pediatria,hospital_braga).
+medico(2,joao,35,radiologia,hospital_porto).
+medico(3,pedro,50,ginecologista,hospital_coimbra).
+medico(4,joaquim, 44, cirugia, hospital_braga).
+
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Funções auxiliares
@@ -130,13 +141,21 @@ involucao(Termo) :- solucoes(I, -Termo::I,Lista),
 					      N == 1
 						  ).
 
+%Invariante Estrutural para verificar se já existe um Id de Medico igual
++medico(ID,_,_,_,_) :: (solucoes(ID,medico(ID,_,_,_,_),S),
+					   comprimento(S,N),
+					   N == 1
+					   ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
 %Invariantes Referenciais: nao permitir a remocao de conhecimento que tenha dependências
 
 %Invariante Referenciais para verificar se já existe o Utente e/ou Serviço
-+consulta(ID,_,IDU,IDS,_) :: (solucoes(ID, (utente(IDU,_,_,_), servico(IDS,_,_,_)), S),
-						comprimento(S,N),
-						N == 1
-						).
++consulta(ID,_,IDU,IDS,IM,_) :: (solucoes(ID, (utente(IDU,_,_,_), servico(IDS,_,I,_), medico(IM,_,_,_,I)), S),
+								comprimento(S,N),
+								N == 1
+								).
 
 %Apenas se pode remover utentes caso não tenham consultas associadas
 -utente(Id,_,_,_) :: (solucoes( Id,(consulta(_,Id,_,_)),S ),
@@ -159,8 +178,11 @@ registarUtente(ID,N,I,C) :- evolucao(utente(ID,N,I,C)).
 % Extensao do predicado registarServiço: Id,Descrição,Instituição,Cidade -> {V,F}
 registarServico(ID,D,I,C) :- evolucao(servico(ID,D,I,C)).
 
-% Extensao do predicado registarConsulta: Data,IdU,IdS,Custo -> {V,F}
-registarConsulta(ID,D,IU,IS,C) :- evolucao(consulta(ID,D,IU,IS,C)).
+% Extensao do predicado registarConsulta: Data,IdU,IdS,IdMedico, Custo -> {V,F}
+registarConsulta(ID,D,IU,IS,IM,C) :- evolucao(consulta(ID,D,IU,IS,IM,C)).
+
+% Extensao do predicado registarMedico: Id,Nome, Idade, Especialidade, Instituição -> {V,F}
+registarMedico(ID,N,I,E,IN) :- evolucao(medico(ID,N,I,E,IN)).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
@@ -262,14 +284,14 @@ identificarServicosCidade(Loca,D) :- solucoes((Serv,Loca,Data),(consulta(_,Data,
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Topico 8
 %Extensao do predicado custoCuidadosPorUtente: IdUten,Lista -> {V,F}
-custoCuidadosPorUtente(ID, R) :- solucoes(C,((consulta(_,_,ID,_,C))), S), sum(S,R).
+custoCuidadosPorUtente(ID, R) :- solucoes(C,((consulta(_,_,ID,_,_,C))), S), sum(S,R).
 
 %Extensao do predicado custoCuidadosPorServico: IdServ,Lista -> {V,F}
-custoCuidadosPorServico(ID, R) :- solucoes(C,(consulta(_,_,_,ID,C)), S), sum(S,R).
+custoCuidadosPorServico(ID, R) :- solucoes(C,(consulta(_,_,_,ID,_,C)), S), sum(S,R).
 
 %Extensao do predicado custoCuidadosPorServico: Inst,Lista -> {V,F}
-custoCuidadosPorInstituicao(I,R) :- solucoes(C,(servico(IDV,_,I,_), consulta(_,_,_,IDV,C)), S), sum(S,R).
+custoCuidadosPorInstituicao(I,R) :- solucoes(C,(servico(IDV,_,I,_), consulta(_,_,_,IDV,_,C)), S), sum(S,R).
 
 %Extensao do predicado custoCuidadosPorData: Data,Lista -> {V,F}
-custoCuidadosPorData(data(D,M,A),R) :- solucoes(C,(consulta(_,data(D,M,A),_,_,C)),S), sum(S,R).
+custoCuidadosPorData(data(D,M,A),R) :- solucoes(C,(consulta(_,data(D,M,A),_,_,_,C)),S), sum(S,R).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
