@@ -17,6 +17,8 @@
 :- dynamic(servico/4).
 :- dynamic(consulta/5).
 :- dynamic(data/3).
+
+:- op( 900,xfy,'::' ).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
@@ -111,19 +113,19 @@ involucao(Termo) :- solucoes(I, -Termo::I,Lista),
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Invariantes Estruturais: nao permitir a insercao de conhecimento repetido
 %Invariante Estrutural para Utente
-+utente(ID,_,_,_) :: (solucoes((ID,_,_,_),utente(ID,_,_,_),S),
++utente(ID,_,_,_) :: (solucoes(ID,utente(ID,_,_,_),S),
 					  comprimento(S,N),
 					  N == 1
 					  ).
 
 %Invariante Estrutural para Servico
-+servico(ID,_,_,_) :: (solucoes((ID,_,_,_),servico(ID,_,_,_),S),
++servico(ID,_,_,_) :: (solucoes(ID,servico(ID,_,_,_),S),
 					   comprimento(S,N),
 					   N == 1
 					   ).
 
 %Invariante Estrutural para verificar se já existe um Id de Consulta igual
-+consulta(ID,_,_,_,_) :: (solucoes((ID,_,_,_,_),(consulta(ID,_,_,_,_)), S),
++consulta(ID,_,_,_,_) :: (solucoes(ID,(consulta(ID,_,_,_,_)), S),
 						  comprimento(S,N),
 					      N == 1
 						  ).
@@ -131,7 +133,7 @@ involucao(Termo) :- solucoes(I, -Termo::I,Lista),
 %Invariantes Referenciais: nao permitir a remocao de conhecimento que tenha dependências
 
 %Invariante Referenciais para verificar se já existe o Utente e/ou Serviço
-+consulta(ID,_,IDU,IDS,_) :: (solucoes((ID,IDU,IDS), (utente(IDU,_,_,_), servico(IDS,_,_,_)), S),
++consulta(ID,_,IDU,IDS,_) :: (solucoes(ID, (utente(IDU,_,_,_), servico(IDS,_,_,_)), S),
 						comprimento(S,N),
 						N == 1
 						).
