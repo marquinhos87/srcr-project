@@ -112,13 +112,14 @@ involucao(Termo) :- solucoes(I, -Termo::I,Lista),
 					      N == 1
 						  ).
 
-%Invariante Estrutural para verificar se já existe o Utente e/ou Serviço
+%Invariantes Referenciais: nao permitir a remocao de conhecimento que tenha dependências
+
+%Invariante Referenciais para verificar se já existe o Utente e/ou Serviço
 +consulta(ID,_,IDU,IDS,_) :: (solucoes((ID,IDU,IDS), (utente(IDU,_,_,_), servico(IDS,_,_,_)), S),
 						comprimento(S,N),
 						N == 1
 						).
 
-%Invariantes Referenciais: nao permitir a remocao de conhecimento que tenha dependências
 %Apenas se pode remover utentes caso não tenham consultas associadas
 -utente(Id,_,_,_) :: (solucoes( Id,(consulta(_,Id,_,_)),S ),
 					  comprimento( S,N ), 
