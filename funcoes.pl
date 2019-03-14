@@ -39,12 +39,10 @@ consulta(data(10,12,98),4,3,30).
 % remove repetidos
 
 takeOutReps([],_).
-takeOutReps([A|B],E) :- add(A,[A|B],E), takeOutReps(B,E).
-
+takeOutReps([A|B],E) :- add(A,E), takeOutReps(B,E).
 
 % adiciona a uma lista de elementos um elemento que esta não tem
 
-add(A,[]) :- (A,[]).
 add(A,[A|_]).
 add(A,[_|E]) :- add(A,E).
 
@@ -67,7 +65,7 @@ entre(A,B,C) :- A =< C, B >= C.
 
 % dá todos os serviços existentes
 
-lerServicos(E) :- findall((C),(servico(_,_,C,_),D)), takeOutReps(D,E).
+lerServicos(E) :- findall((C),(servico(_,_,C,_)),D), takeOutReps(D,E).
 
 
 % -------------       3º Tópico       ----------------------
@@ -141,6 +139,8 @@ consultaCustosInferiores(CustoMax,D) :- findall((Data, IdUt, IdServ, Custo),(con
 consultaCustossUPeriores(CustoMax,D) :- findall((Data, IdUt, IdServ, Custo),(consulta(Data, IdUt, IdServ, Custo),Custo >= CustoMax),D).
 
 
+
+isEquals(A,B,C,D,E,F) :- A =:= D, B =:= E, C =:= F.
 
 % -------------       4º Tópico       ----------------------
 
