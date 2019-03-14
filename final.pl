@@ -26,23 +26,39 @@ utente(2,carlos,15,beja).
 utente(3,alfredo,45,braga).
 utente(4,dario,72,lisboa).
 utente(5,quim,25,braga).
+utente(6,henrique,20,braga).
+utente(7,ricardo,20,braga).
+utente(8,bruno,44,aveiro).
+utente(9,nuno,33,sagres).
+utente(10,pedro,70,coimbra).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Extenção do predicado servico: IdServ,Descrição,Instituição,Cidade -> {V,F}
-servico(1,urgencias,sos1,braga).
-servico(2,autopsias,sos2,braga).
-servico(3,geral,sos2,braga).
-servico(4,especialidade,sos3,braga).
+servico(1,urgencias,hospital_braga,braga).
+servico(2,autopsias,hospital_braga,braga).
+servico(3,geral,hospital_braga,braga).
+servico(4,analises,hospital_trofa_1,braga).
+servico(5,radio_grafia,hospital_lisboa,lisboa).
+servico(6,dentista,hospital_coimbra,coimbra).
+servico(7,ecografia,hospital_aveiro,aveiro).
+servico(8,fisioterapia,hospital_trofa_2,porto).
+servico(9,urgencias,hospital_aveiro,aveiro).
+servico(10,urgencias, hospital_porto,porto).
+servico(11,radio_grafia,hospital_braga, braga).
+servico(12,tumografia,hospital_braga, braga).
+servico(13,dermatologia,hospital_coimbra,coimbra).
+servico(14,rinoplastia, hospital_lisboa, lisboa).
+servico(15,radio_grafia,hospital_braga,braga).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Extenção do predicado consulta: Id,Data,IdUt,IdServ,Custo -> {V,F}
-consulta(1,data(10,10,98),1,4,60).
-consulta(2,data(24,10,98),1,1,23).
-consulta(3,data(10,10,98),2,2,40).
-consulta(4,data(10,10,98),3,2,40).
-consulta(5,data(10,10,98),4,3,30).
+consulta(1,data(11,2,2019),1,1,15).
+consulta(2,data(12,3,2018),2,2,20).
+consulta(3,data(13,1,2019),3,3,25).
+consulta(4,data(25,8,2017),4,1,15).
+consulta(5,data(2,10,2007),5,15,30).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
