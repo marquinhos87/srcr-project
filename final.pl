@@ -173,7 +173,7 @@ involucao(Termo) :- solucoes(I, -Termo::I,Lista),
 					   N == 0
                   	   ).
 
--consulta(,,_,_,_) :: (no).
+-consulta(_,_,_,_,_) :: (no).
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
@@ -290,9 +290,10 @@ identificarServicosCidade(Loca,D) :- solucoes((Serv,Loca,Data),(consulta(_,Data,
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Topico 8
+%Topico 8 
+
 %Extensao do predicado custoCuidadosPorUtente: IdUten,Lista -> {V,F}
-custoCuidadosPorUtente(ID, R) :- solucoes(C,((consulta(_,_,ID,_,_,C))), S), sum(S,R).
+custoCuidadosPorUtente(ID, R) :- solucoes(C,(consulta(_,_,ID,_,_,C)), S),sum(S,R).
 
 %Extensao do predicado custoCuidadosPorServico: IdServ,Lista -> {V,F}
 custoCuidadosPorServico(ID, R) :- solucoes(C,(consulta(_,_,_,ID,_,C)), S), sum(S,R).
@@ -303,3 +304,6 @@ custoCuidadosPorInstituicao(I,R) :- solucoes(C,(servico(IDV,_,I,_), consulta(_,_
 %Extensao do predicado custoCuidadosPorData: Data,Lista -> {V,F}
 custoCuidadosPorData(data(D,M,A),R) :- solucoes(C,(consulta(_,data(D,M,A),_,_,_,C)),S), sum(S,R).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
+
+
