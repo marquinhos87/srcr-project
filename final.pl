@@ -77,22 +77,6 @@ medico(4,joaquim, 44, cirugia, hospital_braga).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Funções auxiliares
 
-%Extensão do predicado de nao: Termo -> {V,F}
-
-nao(X) :- X,!,fail.
-nao(_).
-
-%Extensão do predicado de takeOutReps: Lista,Termo -> {V,F}
-%remove repetidos
-takeOutReps([],[]).
-takeOutReps([A|B],C) :- pertence(A,B), takeOutReps(B,C).
-takeOutReps([A|B],[A|C]) :- nao(pertence(A,B)), takeOutReps(B,C).
-
-% Extensão do predicado de add: Termo,Lista -> {V,F}
-%garante que a lista tem o termo passado
-pertence(A,[A|_]).
-pertence(A,[_|B]) :- pertence(A,B).
-
 %Extensão do predicado de entre: Numero,Numero,Numero -> {V,F}
 %compara se o ultimo inteiro está entre os dois primeiros
 entre(A,B,C) :- A =< C, B >= C.
@@ -214,7 +198,7 @@ removerConsulta(ID) :- involucao(consulta(ID,_,_,_,_)).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Topico 3
 %Extensão do predicado de lerServicos: Lista -> {V,F}
-lerServicos(E) :- findall((C),(servico(_,_,C,_)),D), takeOutReps(D,E).
+lerServicos(D) :- solucoes((C),servico(_,_,C,_),E), setof((C),member((C),E),D).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
