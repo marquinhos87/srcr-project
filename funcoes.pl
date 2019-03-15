@@ -36,15 +36,21 @@ consulta(data(10,12,98),4,3,30).
 
 % -------------       Funções auxiliares       ----------------------
 
+
+% Predicado Nao
+
+nao(X) :- X,!,fail.
+nao(_).
+
 % remove repetidos
 
-takeOutReps([],_).
-takeOutReps([A|B],E) :- add(A,E), takeOutReps(B,E).
+takeOutReps([],[]).
+takeOutReps([A|B],C) :- pertence(A,B), takeOutReps(B,C).
+takeOutReps([A|B],[A|C]) :- nao(pertence(A,B)), takeOutReps(B,C).
 
-% adiciona a uma lista de elementos um elemento que esta não tem
+pertence(A,[A|_]).
+pertence(A,[_|B]) :- pertence(A,B).
 
-add(A,[A|_]).
-add(A,[_|E]) :- add(A,E).
 
 entre(A,B,C) :- A =< C, B >= C.
 
