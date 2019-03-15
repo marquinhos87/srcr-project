@@ -261,10 +261,10 @@ servPrestPorCusto(Custo, S) :- solucoes(servico(IdServ, Desc, Inst, Cid),(servic
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Topico 6
 %Extensão do predicado de identificarUtentesServico: Servico,Lista -> {V,F}
-identificarUtentesServico(Serv,D) :- solucoes((Uten,Serv,Data),(consulta(_,Data,A,Serv,_),utente(A,Uten,_,_)),D).
+identificarUtentesServico(Serv,D) :- solucoes((Uten,Serv),(consulta(_,_,A,Serv,_),utente(A,Uten,_,_)),D).
 
 %Extensão do predicado de identificarUtentesInstituicao: Cidade,Lista -> {V,F}
-identificarUtentesInstituicao(Inst,D) :- solucoes((Uten,Inst,Data),(consulta(_,Data,A,G,_),servico(G,_,Inst,_),utente(A,Uten,_,_)),D).
+identificarUtentesInstituicao(Inst,D) :- solucoes((Uten,Inst),(consulta(_,_,A,G,_),servico(G,_,Inst,_),utente(A,Uten,_,_)),D).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
@@ -294,6 +294,3 @@ custoCuidadosPorInstituicao(I,R) :- solucoes(C,(servico(IDV,_,I,_), consulta(_,_
 %Extensao do predicado custoCuidadosPorData: Data,Lista -> {V,F}
 custoCuidadosPorData(data(D,M,A),R) :- solucoes(C,(consulta(_,data(D,M,A),_,_,_,C)),S), sum(S,R).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-
-
-
