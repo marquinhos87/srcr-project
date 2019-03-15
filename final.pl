@@ -19,7 +19,6 @@
 :- dynamic(data/3).
 :- dynamic(medico/5).
 
-
 :- op( 900,xfy,'::' ).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
@@ -72,8 +71,6 @@ medico(1,jose,30,pediatria,hospital_braga).
 medico(2,joao,35,radiologia,hospital_porto).
 medico(3,pedro,50,ginecologista,hospital_coimbra).
 medico(4,joaquim, 44, cirugia, hospital_braga).
-
-
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Funções auxiliares
 
@@ -118,33 +115,34 @@ involucao(Termo) :- solucoes(I, -Termo::I,Lista),
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Invariantes Estruturais: nao permitir a insercao de conhecimento repetido
-%Invariante Estrutural para Utente
+
+%para Utente
 +utente(ID,_,_,_) :: (solucoes(ID,utente(ID,_,_,_),S),
 					  comprimento(S,N),
 					  N == 1
 					  ).
 
-%Invariante Estrutural para Servico
+%para Servico
 +servico(ID,_,_,_) :: (solucoes(ID,servico(ID,_,_,_),S),
 					   comprimento(S,N),
 					   N == 1
 					   ).
 
-%Invariante Estrutural para verificar se já existe um Id de Consulta igual
+%para verificar se já existe um Id de Consulta igual
 +consulta(ID,_,_,_,_) :: (solucoes(ID,(consulta(ID,_,_,_,_)), S),
 						  comprimento(S,N),
 					      N == 1
 						  ).
 
-%Invariante Estrutural para verificar se já existe um Id de Medico igual
+%para verificar se já existe um Id de Medico igual
 +medico(ID,_,_,_,_) :: (solucoes(ID,medico(ID,_,_,_,_),S),
 					   comprimento(S,N),
 					   N == 1
 					   ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%Invariantes Referenciais:
 
-%Invariantes Referenciais: 
 %para verificar se já existe o Utente e/ou Serviço
 +consulta(ID,_,IDU,IDS,IM,_) :: (solucoes(ID, (utente(IDU,_,_,_), servico(IDS,_,I,_), medico(IM,_,_,_,I)), S),
 								comprimento(S,N),
@@ -163,13 +161,13 @@ involucao(Termo) :- solucoes(I, -Termo::I,Lista),
 					   N == 0
                   	   ).
 
+%Não convêm remover consultas por isso não o permitimos com este Invariante
 -consulta(_,_,_,_,_) :: (no).
-
-
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Topico 1
+
 % Extensao do predicado registarUtente: Id,Nome,Idade,Cidade -> {V,F}
 registarUtente(ID,N,I,C) :- evolucao(utente(ID,N,I,C)).
 
@@ -185,6 +183,7 @@ registarMedico(ID,N,I,E,IN) :- evolucao(medico(ID,N,I,E,IN)).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Topico 2
+
 %Extensão do predicado de removerUtente: IdUten -> {V,F}
 removerUtente(ID) :- involucao(utente(ID,_,_,_)).
 
@@ -197,12 +196,14 @@ removerConsulta(ID) :- involucao(consulta(ID,_,_,_,_)).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Topico 3
+
 %Extensão do predicado de lerServicos: Lista -> {V,F}
 lerServicos(D) :- solucoes((C),servico(_,_,C,_),E), setof((C),member((C),E),D).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Topico 4
+
 %Extensão do predicado de clienteNome: Nome,Lista -> {V,F}
 clienteNome(Nome,D) :- solucoes((Nome,Idade,Cidade),utente(_,Nome,Idade,Cidade),D).
 
@@ -245,6 +246,7 @@ consultaCustosSuperiores(CustoMax,D) :- solucoes((Id,Data,IdUt,IdServ,IdMed,Cust
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Topico 5
+
 %Extensão do predicado de servPrestPorInst: Instituicao,Lista -> {V,F}
 servPrestPorInst(Inst, S) :- solucoes(servico(IdServ, Desc, Inst, Cid),(servico(IdServ, Desc, Inst, Cid)),S).
 
@@ -260,6 +262,7 @@ servPrestPorCusto(Custo, S) :- solucoes(servico(IdServ, Desc, Inst, Cid),(servic
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Topico 6
+
 %Extensão do predicado de identificarUtentesServico: Servico,Lista -> {V,F}
 identificarUtentesServico(Serv,D) :- solucoes((Uten,Serv),(consulta(_,_,A,Serv,_),utente(A,Uten,_,_)),D).
 
@@ -269,6 +272,7 @@ identificarUtentesInstituicao(Inst,D) :- solucoes((Uten,Inst),(consulta(_,_,A,G,
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Topico 7
+
 %Extensão do predicado de identificarServicosUtente: Utente,Lista -> {V,F}
 identificarServicosUtente(Uten,D) :- solucoes((Serv,Uten,Data),(consulta(_,Data,Uten,A,_),servico(A,Serv,_,_)),D).
 
