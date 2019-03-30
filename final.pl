@@ -254,33 +254,33 @@ servPrestPorInst(Inst, S) :- solucoes(servico(IdServ, Desc, Inst, Cid),(servico(
 servPrestPorCidade(Cid, S) :- solucoes(servico(IdServ, Desc, Inst, Cid),(servico(IdServ, Desc, Inst, Cid)),S).
 
 %Extensão do predicado de servPrestPorDatas: Data,Data,Lista -> {V,F}
-servPrestPorDatas(data(D1,M1,A1),data(D2,M2,A2), S) :- solucoes(servico(IdServ, Desc, Inst, Cid),(servico(IdServ, Desc, Inst, Cid),consulta(data(D3,M3,A3),_,IdServ,_,_),entre(A1*365+M1*30+D1,A2*365+M2*30+D2,A3*365+M3*30+D3)),S).
+servPrestPorDatas(data(D1,M1,A1),data(D2,M2,A2), S) :- solucoes(servico(IdServ, Desc, Inst, Cid),(servico(IdServ, Desc, Inst, Cid),consulta(_,data(D3,M3,A3),_,IdServ,_,_),entre(A1*365+M1*30+D1,A2*365+M2*30+D2,A3*365+M3*30+D3)),S).
 
 %Extensão do predicado de servPrestPorCusto: Custo,Lista -> {V,F}
-servPrestPorCusto(Custo, S) :- solucoes(servico(IdServ, Desc, Inst, Cid),(servico(IdServ, Desc, Inst, Cid), consulta(_,_,IdServ,_,Custo)),S).
+servPrestPorCusto(Custo, S) :- solucoes(servico(IdServ, Desc, Inst, Cid),(servico(IdServ, Desc, Inst, Cid), consulta(_,_,_,IdServ,_,Custo)),S).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Topico 6
 
 %Extensão do predicado de identificarUtentesServico: Servico,Lista -> {V,F}
-identificarUtentesServico(Serv,D) :- solucoes((Uten,Serv),(consulta(_,_,A,Serv,_),utente(A,Uten,_,_)),D).
+identificarUtentesServico(Serv,D) :- solucoes((Uten,Serv,Data),(consulta(_,Data,A,Serv,_,_),utente(A,Uten,_,_)),D).
 
 %Extensão do predicado de identificarUtentesInstituicao: Cidade,Lista -> {V,F}
-identificarUtentesInstituicao(Inst,D) :- solucoes((Uten,Inst),(consulta(_,_,A,G,_),servico(G,_,Inst,_),utente(A,Uten,_,_)),D).
+identificarUtentesInstituicao(Inst,D) :- solucoes((Uten,Inst,Data),(consulta(_,Data,A,G,_,_),servico(G,_,Inst,_),utente(A,Uten,_,_)),D).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Topico 7
 
 %Extensão do predicado de identificarServicosUtente: Utente,Lista -> {V,F}
-identificarServicosUtente(Uten,D) :- solucoes((Serv,Uten,Data),(consulta(_,Data,Uten,A,_),servico(A,Serv,_,_)),D).
+identificarServicosUtente(Uten,D) :- solucoes((Serv,Uten,Data),(consulta(_,Data,Uten,A,_,_),servico(A,Serv,_,_)),D).
 
 %Extensão do predicado de identificarServicosInstituicao: Instituicao,Lista -> {V,F}
-identificarServicosInstituicao(Inst,D) :- solucoes((Serv,Inst,Data),(consulta(_,Data,_,A,_),servico(A,Serv,Inst,_)),D).
+identificarServicosInstituicao(Inst,D) :- solucoes((Serv,Inst,Data),(consulta(_,Data,_,A,_,_),servico(A,Serv,Inst,_)),D).
 
 %Extensão do predicado de identificarServicosCidade: Cidade,Lista -> {V,F}
-identificarServicosCidade(Loca,D) :- solucoes((Serv,Loca,Data),(consulta(_,Data,_,A,_),servico(A,Serv,_,Loca)),D).
+identificarServicosCidade(Loca,D) :- solucoes((Serv,Loca,Data),(consulta(_,Data,_,A,_,_),servico(A,Serv,_,Loca)),D).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
