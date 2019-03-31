@@ -129,10 +129,10 @@ involucao(Termo) :- solucoes(I, -Termo::I,Lista),
 					   ).
 
 %para verificar se já existe um Id de Consulta igual
-+consulta(ID,_,_,_,_) :: (solucoes(ID,(consulta(ID,_,_,_,_)), S),
-						  comprimento(S,N),
-					      N == 1
-						  ).
++consulta(ID,_,_,_,_,_) :: (solucoes(ID,(consulta(ID,_,_,_,_,_)), S),
+						   comprimento(S,N),
+					       N == 1
+						   ).
 
 %para verificar se já existe um Id de Medico igual
 +medico(ID,_,_,_,_) :: (solucoes(ID,medico(ID,_,_,_,_),S),
@@ -150,19 +150,25 @@ involucao(Termo) :- solucoes(I, -Termo::I,Lista),
 								).
 
 %Apenas se pode remover utentes caso não tenham consultas associadas
--utente(Id,_,_,_) :: (solucoes( Id,(consulta(_,Id,_,_)),S ),
+-utente(Id,_,_,_) :: (solucoes( Id,(consulta(_,_,Id,_,_,_)),S ),
+					  comprimento( S,N ), 
+					  N == 0
+                      ).
+
+%Apenas se pode remover médicos caso não tenham consultas associadas
+-medico(Id,_,_,_) :: (solucoes( Id,(consulta(_,_,_,_,Id,_)),S ),
 					  comprimento( S,N ), 
 					  N == 0
                       ).
 
 %Apenas se pode remover serviços caso não tenham consultas associadas
--servico(Id,_,_,_) :: (solucoes( Id,(consulta(_,_,Id,_)),S ),
+-servico(Id,_,_,_) :: (solucoes( Id,(consulta(_,_,_,Id,_,_)),S ),
 					   comprimento( S,N ), 
 					   N == 0
                   	   ).
 
 %Não convêm remover consultas por isso não o permitimos com este Invariante
--consulta(_,_,_,_,_) :: (no).
+-consulta(_,_,_,_,_,_) :: (no).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
@@ -286,11 +292,14 @@ identificarServicosCidade(Loca,D) :- solucoes((Serv,Loca,Data),(consulta(_,Data,
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Topico 8 
 
+sum([],0).
+sum([H|T],R) :- sum(T, S), R is S + H.
+
 %Extensao do predicado custoCuidadosPorUtente: IdUten,Lista -> {V,F}
-custoCuidadosPorUtente(ID, R) :- solucoes(C,(consulta(_,_,ID,_,_,C)), S),sum(S,R).
+custoCuidadosPorUtente(Id, R) :- solucoes(C,(consulta(_,_,Id,_,_,C)), S), sum(S,R).
 
 %Extensao do predicado custoCuidadosPorServico: IdServ,Lista -> {V,F}
-custoCuidadosPorServico(ID, R) :- solucoes(C,(consulta(_,_,_,ID,_,C)), S), sum(S,R).
+custoCuidadosPorServico(Id, R) :- solucoes(C,(consulta(_,_,_,Id,_,C)), S), sum(S,R).
 
 %Extensao do predicado custoCuidadosPorServico: Inst,Lista -> {V,F}
 custoCuidadosPorInstituicao(I,R) :- solucoes(C,(servico(IDV,_,I,_), consulta(_,_,_,IDV,_,C)), S), sum(S,R).
