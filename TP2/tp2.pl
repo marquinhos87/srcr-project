@@ -216,7 +216,341 @@ medico(4,joaquim, 44,cirurgia,hospital_braga).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Tópico 2
+%Tópico 2 -> Conhecimento Imperfeito
+
+
+
+%representação :
+
+
+% Conhecimento Desconhecido -----------------------------------------------------------------------
+
+
+
+% utente: IdUt,Nome,Idade,Cidade
+% possíveis valores desconhecidos : Nome,Idade,Cidade
+
+
+excecao(utente(A,B,C,D)) :- utente(A,X,C,D),
+                            nulo(X).
+
+excecao(utente(A,B,C,D)) :- utente(A,B,X,D),
+                            nulo(X).
+
+excecao(utente(A,B,C,D)) :- utente(A,B,C,X),
+                            nulo(X).
+
+excecao(utente(A,B,C,D)) :- utente(A,X,Y,D),
+                            nulo(X),
+                            nulo(Y).
+
+excecao(utente(A,B,C,D)) :- utente(A,X,C,Y),
+                            nulo(X),
+                            nulo(Y).
+
+excecao(utente(A,B,C,D)) :- utente(A,B,X,Y),
+                            nulo(X),
+                            nulo(Y).
+
+excecao(utente(A,B,C,D)) :- utente(A,X,Y,Z),
+                            nulo(X),
+                            nulo(Y),
+                            nulo(Z).
+
+
+
+% servico: IdServ,Descrição,Instituição,Cidade
+% possíveis valores desconhecidos : Descrição,Instituição,Cidade
+
+
+excecao(servico(A,B,C,D)) :- servico(A,X,C,D),
+                             nulo(X).
+
+excecao(servico(A,B,C,D)) :- servico(A,B,X,D),
+                             nulo(X).
+
+excecao(servico(A,B,C,D)) :- servico(A,B,C,X),
+                             nulo(X).
+
+
+excecao(servico(A,B,C,D)) :- servico(A,X,Y,D),
+                             nulo(X),
+                             nulo(Y).
+
+
+excecao(servico(A,B,C,D)) :- servico(A,X,C,Y),
+                             nulo(X),
+                             nulo(Y).
+
+
+excecao(servico(A,B,C,D)) :- servico(A,B,X,Y),
+                             nulo(X),
+                             nulo(Y).
+
+
+excecao(servico(A,B,C,D)) :- servico(A,X,Y,Z),
+                             nulo(X),
+                             nulo(Y),
+                             nulo(Z).
+
+
+
+% consulta: Id,Data,IdUt,IdServ,IdMedico,Custo
+% possíveis valores desconhecidos: Data,IdUt,IdServ,IdMedico,Custo
+
+
+excecao(consulta(A,B,C,D,E,F)) :- consulta(A,X,C,D,E,F),
+                                  nulo(X).
+
+excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,X,D,E,F),
+                                  nulo(X).
+
+excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,C,X,E,F),
+                                  nulo(X).
+
+excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,C,D,X,F),
+                                  nulo(X).
+
+excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,C,D,E,X),
+                                  nulo(X).
+
+excecao(consulta(A,B,C,D,E,F)) :- consulta(A,X,Y,D,E,F),
+                                  nulo(X).
+
+excecao(consulta(A,B,C,D,E,F)) :- consulta(A,X,C,D,E,F),
+                                  nulo(X).
+
+excecao(consulta(A,B,C,D,E,F)) :- consulta(A,X,Y,D,E,F),
+                                  nulo(X),
+                                  nulo(Y).
+
+excecao(consulta(A,B,C,D,E,F)) :- consulta(A,X,C,Y,E,F),
+                                  nulo(X),
+                                  nulo(Y).
+
+excecao(consulta(A,B,C,D,E,F)) :- consulta(A,X,C,D,Y,F),
+                                  nulo(X),
+                                  nulo(Y).
+
+excecao(consulta(A,B,C,D,E,F)) :- consulta(A,X,C,D,E,Y),
+                                  nulo(X),
+                                  nulo(Y).
+
+excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,X,Y,E,F),
+                                  nulo(X),
+                                  nulo(Y).
+
+excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,X,D,Y,F),
+                                  nulo(X),
+                                  nulo(Y).
+
+excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,X,D,E,Y),
+                                  nulo(X),
+                                  nulo(Y).
+
+excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,C,X,Y,F),
+                                  nulo(X),
+                                  nulo(Y).
+
+excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,C,X,E,Y),
+                                  nulo(X),
+                                  nulo(Y).
+
+excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,C,D,X,Y),
+                                  nulo(X),
+                                  nulo(Y).
+
+
+
+% medico: Id,Nome, Idade, Especialidade, Instituição
+%possíveis valores desconhecidos: Nome,Idade,Especialidade,Instituição
+
+
+excecao(medico(A,B,C,D,E)) :- medico(A,X,C,D,E),
+                              nulo(X).
+
+excecao(medico(A,B,C,D,E)) :- medico(A,B,X,D,E),
+                              nulo(X).
+
+excecao(medico(A,B,C,D,E)) :- medico(A,B,C,X,E),
+                              nulo(X).
+
+excecao(medico(A,B,C,D,E)) :- medico(A,B,C,D,X),
+                              nulo(X).
+
+excecao(medico(A,B,C,D,E)) :- medico(A,X,Y,D,E),
+                              nulo(X),
+                              nulo(Y).
+
+excecao(medico(A,B,C,D,E)) :- medico(A,X,C,Y,E),
+                              nulo(X),
+                              nulo(Y).
+
+excecao(medico(A,B,C,D,E)) :- medico(A,X,C,D,Y),
+                              nulo(X),
+                              nulo(Y).
+
+excecao(medico(A,B,C,D,E)) :- medico(A,B,X,Y,E),
+                              nulo(X),
+                              nulo(Y).
+
+excecao(medico(A,B,C,D,E)) :- medico(A,B,X,D,Y),
+                              nulo(X),
+                              nulo(Y).
+
+excecao(medico(A,B,C,D,E)) :- medico(A,B,C,X,Y),
+                              nulo(X),
+                              nulo(Y).
+
+excecao(medico(A,B,C,D,E)) :- medico(A,X,Y,Z,E),
+                              nulo(X),
+                              nulo(Y),
+                              nulo(Z).
+
+excecao(medico(A,B,C,D,E)) :- medico(A,X,Y,D,Z),
+                              nulo(X),
+                              nulo(Y),
+                              nulo(Z).
+
+excecao(medico(A,B,C,D,E)) :- medico(A,X,C,Y,Z),
+                              nulo(X),
+                              nulo(Y),
+                              nulo(Z).
+
+excecao(medico(A,B,C,D,E)) :- medico(A,B,X,Y,Z),
+                              nulo(X),
+                              nulo(Y),
+                              nulo(Z).
+
+excecao(medico(A,B,C,D,E)) :- medico(A,X,Y,Z,J),
+                              nulo(X),
+                              nulo(Y),
+                              nulo(Z),
+                              nulo(J).
+
+
+
+% Conhecimento  imperfeito incerto -------------------------------------------------------------
+
+
+
+%Para o utente de id 15, ninguém sabe a idade, mas sabe-se que não tem 20 anos
+
+utente(15,anabela,xIdade,guimaraes).
+-utente(15,anabela,20,guimaraes).
+
+
+
+% para o servico de id 20, ninguém sabe a a descrição, mas sabe-se que não é fisioterapia
+
+servico(20,xDescricao,hospital_braga, braga).
+-servico(20,fisioterapia,hospital_braga, braga).
+
+% ninguém sabe, para a consulta de id 10, a data em que foi realizada, mas sabe-se que não foi a 10-10-1998
+
+consulta(10,data(xDia,xMes,xAno),1,1,1,15).
+-consulta(10,data(10,10,1998),1,1,1,15).
+
+
+% para o medico de id 10, ninguém sabe a especialidade , mas sabe-se que não é radiografia
+
+medico(10,Jusue,30,xEspecialidade,hospital_braga).
+-medico(10,Jusue,30,radiografia,hospital_braga).
+
+
+
+% -------------------------------------------------------------------------------------------------------------------------------
+% Conhecimento  imperfeito impreciso
+
+
+
+% não se sabe se o utente de id 20 se chama mauricio ou anacleto
+
+utente(20,mauricio,20,braga).
+utente(20,anacleto,20,braga).
+
+
+% não se sabe se o servico de id 25 é disponibilizado no hospital_trofa_1 ou no hospital_trofa_2
+
+servico(25,tumografia,hospital_trofa_1,braga).
+servico(25,tumografia,hospital_trofa_2,porto).
+
+
+% não se sabe se a consulta de id 15 foi feita ao paciente 1 ou 2
+
+consulta(15,data(1,1,2019),1,15,1,30). 
+consulta(15,data(1,1,2019),2,15,1,30). 
+
+
+% não se sabe se o medico de id 15 tem 21 ou 22 anos
+
+medico(15,goncalo,21,fisioterapia,hospital_trofa_2).
+medico(15,goncalo,22,fisioterapia,hospital_trofa_2).
+
+
+
+% -------------------------------------------------------------------------------------------------------------------------------
+%Representação de conhecimento imperfeito interdito
+
+
+
+% utente: IdUt,Nome,Idade,Cidade
+% o utente de id 25 mora numa cidade que ninguém pode saber qual é.
+
+utente(25,ana,23,xCidade).
+
++utente(A,B,C,D)::(solucoes(utente(A,B,C,D),utente(A,B,C,xCidade),L),
+                  comprimento(L,S),
+                  S == 0).
+
+
+
+% servico: IdServ,Descrição,Instituição,Cidade
+%não é possível saber qual a Intituicao que prestou o servico de id 30
+
+servico(25,tumografia,xInstituicao,braga).
+
++servico(A,B,C,D)::(solucoes(servico(A,B,C,D),servico(A,B,xInstituicao,D),L),
+                  comprimento(L,S),
+                  S == 0).
+
+
+% consulta: Id,Data,IdUt,IdServ,IdMedico,Custo
+% não é possivel saber o id do médico que prestou a consulta de id 20
+
+consulta(20,data(1,1,2019),2,15,xIdMedico,30). 
+
++consulta(A,B,C,D,E,F)::(solucoes(consulta(A,B,C,D,E,F),consulta(A,B,C,D,xMedico,F),L),
+                        comprimento(L,S),
+                        S == 0).
+
+
+
+% medico: Id,Nome, Idade, Especialidade, Instituição
+
+% não é possível saber a instituicao onde trabalha o médico de id 20
+
+medico(20,marco,47,oncologia,xInstituicao).
+
++medico(A,B,C,D)::(solucoes(medico(A,B,C,D),medico(A,B,C,xInstituicao),L),
+                  comprimento(L,S),
+                  S == 0).
+
+
+
+%Representação do meta-predicado nulo : valor -> {V,F}
+
+
+nulo(xIdade).
+nulo(data(xDia,xMes,xAno)).
+nulo(xEspecialidade).
+nulo(xDescricao).
+nulo(xCidade).
+nulo(xMedico).
+nulo(xInstituicao).
+
+
+
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
