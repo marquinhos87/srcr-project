@@ -98,75 +98,6 @@ si(Questao,desconhecido) :- nao(Questao), nao(-Questao).
 nao(Questao) :- Questao, !, fail.
 nao(Questao).
 
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Representação do predicado excecao
-%Utentes podem ter valores desconhecidos de Idade, Rua, Telemovel e Email (e algumas combinações entre estas)
-excecao().
-excecao().
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Representação do meta-predicado nulo : tag -> {V,F}
-nulo().
-nulo().
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Invariantes Estruturais: nao permitir a insercao de conhecimento repetido
-
-%para Utente
-+utente(ID,_,_,_) :: (solucoes(ID,utente(ID,_,_,_),S),
-					  comprimento(S,N),
-					  N == 1
-					  ).
-
-%para Servico
-+servico(ID,_,_,_) :: (solucoes(ID,servico(ID,_,_,_),S),
-					   comprimento(S,N),
-					   N == 1
-					   ).
-
-%para Medico
-+medico(ID,_,_,_,_) :: (solucoes(ID,medico(ID,_,_,_,_),S),
-					   comprimento(S,N),
-					   N == 1
-					   ).
-
-%para verificar se já existe um Id de Consulta igual
-+consulta(ID,_,_,_,_,_) :: (solucoes(ID,(consulta(ID,_,_,_,_,_)), S),
-						   comprimento(S,N),
-					       N == 1
-						   ).
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Invariantes Referenciais:
-
-%para verificar se já existe o Utente e/ou Serviço
-+consulta(ID,_,IDU,IDS,IM,_) :: (solucoes(ID, (utente(IDU,_,_,_), servico(IDS,_,I,_), medico(IM,_,_,_,I)), S),
-								comprimento(S,N),
-								N == 1
-								).
-
-%Apenas se pode remover utentes caso não tenham consultas associadas
--utente(Id,_,_,_) :: (solucoes( Id,(consulta(_,_,Id,_,_,_)),S ),
-					  comprimento( S,N ), 
-					  N == 0
-                      ).
-
-%Apenas se pode remover médicos caso não tenham consultas associadas
--medico(Id,_,_,_) :: (solucoes( Id,(consulta(_,_,_,_,Id,_)),S ),
-					  comprimento( S,N ), 
-					  N == 0
-                      ).
-
-%Apenas se pode remover serviços caso não tenham consultas associadas
--servico(Id,_,_,_) :: (solucoes( Id,(consulta(_,_,_,Id,_,_)),S ),
-					   comprimento( S,N ), 
-					   N == 0
-                  	   ).
-
-%Não convêm remover consultas por isso não o permitimos com este Invariante
--consulta(_,_,_,_,_,_) :: (no).
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Tópico 1
@@ -213,14 +144,12 @@ medico(2,joao,35,radiologia,hospital_porto).
 medico(3,pedro,50,ginecologia,hospital_coimbra).
 medico(4,joaquim, 44,cirurgia,hospital_braga).
 
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
+
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Tópico 2 -> Conhecimento Imperfeito
 
-
-
-%representação :
 
 
 % Conhecimento Desconhecido -----------------------------------------------------------------------
@@ -446,6 +375,7 @@ utente(15,anabela,xIdade,guimaraes).
 servico(20,xDescricao,hospital_braga, braga).
 -servico(20,fisioterapia,hospital_braga, braga).
 
+
 % ninguém sabe, para a consulta de id 10, a data em que foi realizada, mas sabe-se que não foi a 10-10-1998
 
 consulta(10,data(xDia,xMes,xAno),1,1,1,15).
@@ -540,7 +470,6 @@ medico(20,marco,47,oncologia,xInstituicao).
 
 %Representação do meta-predicado nulo : valor -> {V,F}
 
-
 nulo(xIdade).
 nulo(data(xDia,xMes,xAno)).
 nulo(xEspecialidade).
@@ -551,20 +480,90 @@ nulo(xInstituicao).
 
 
 
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Tópico 3
 
+
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%Invariantes Estruturais: 
+
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%Invariantes Estruturais:
+
+% Observação: os invarientes Estruturais relacionados com a adição de conhecimento 
+%             interdito já se encontram desenvolvidos em cima juntamente com a respetiva
+%             demonstração de tentativa de adição desse conhecimento, que deverá ser 
+%             impossível neste caso.
+
+% nao permitir a insercao de uma excecao repetida
++excecao(T) :: ( solucoes(excecao(T),excecao(T),S),
+                 comprimento(S,N),
+                 N == 1 ).
+
+% nao permitir a remoção de uma excecao
+-excecao(T) :: ( no ).
+
+
+%para Utente
++utente(ID,_,_,_) :: (solucoes(ID,utente(ID,_,_,_),S),
+            comprimento(S,N),
+            N == 1
+            ).
+
+%para Servico
++servico(ID,_,_,_) :: (solucoes(ID,servico(ID,_,_,_),S),
+             comprimento(S,N),
+             N == 1
+             ).
+
+%para Medico
++medico(ID,_,_,_,_) :: (solucoes(ID,medico(ID,_,_,_,_),S),
+             comprimento(S,N),
+             N == 1
+             ).
+
+%para verificar se já existe um Id de Consulta igual
++consulta(ID,_,_,_,_,_) :: (solucoes(ID,(consulta(ID,_,_,_,_,_)), S),
+               comprimento(S,N),
+                 N == 1
+               ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%Invariantes Referenciais:
+
+%para verificar se já existe o Utente e/ou Serviço
++consulta(ID,_,IDU,IDS,IM,_) :: (solucoes(ID, (utente(IDU,_,_,_), servico(IDS,_,I,_), medico(IM,_,_,_,I)), S),
+                comprimento(S,N),
+                N == 1
+                ).
+
+%Apenas se pode remover utentes caso não tenham consultas associadas
+-utente(Id,_,_,_) :: (solucoes( Id,(consulta(_,_,Id,_,_,_)),S ),
+            comprimento( S,N ), 
+            N == 0
+                      ).
+
+%Apenas se pode remover médicos caso não tenham consultas associadas
+-medico(Id,_,_,_) :: (solucoes( Id,(consulta(_,_,_,_,Id,_)),S ),
+            comprimento( S,N ), 
+            N == 0
+                      ).
+
+%Apenas se pode remover serviços caso não tenham consultas associadas
+-servico(Id,_,_,_) :: (solucoes( Id,(consulta(_,_,_,Id,_,_)),S ),
+             comprimento( S,N ), 
+             N == 0
+                       ).
+
+%Não convêm remover consultas por isso não o permitimos com este Invariante
+-consulta(_,_,_,_,_,_) :: (no).
+
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Tópico 4
 
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Tópico 5
 
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
