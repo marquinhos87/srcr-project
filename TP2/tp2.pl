@@ -396,26 +396,26 @@ medico(10,Jusue,30,xEspecialidade,hospital_braga).
 
 % não se sabe se o utente de id 20 se chama mauricio ou anacleto
 
-utente(20,mauricio,20,braga).
-utente(20,anacleto,20,braga).
+excecao(utente(20,mauricio,20,braga)).
+excecao(utente(20,anacleto,20,braga)).
 
 
 % não se sabe se o servico de id 25 é disponibilizado no hospital_trofa_1 ou no hospital_trofa_2
 
-servico(25,tumografia,hospital_trofa_1,braga).
-servico(25,tumografia,hospital_trofa_2,porto).
+excecao(servico(25,tumografia,hospital_trofa_1,braga)).
+excecao(servico(25,tumografia,hospital_trofa_2,porto)).
 
 
 % não se sabe se a consulta de id 15 foi feita ao paciente 1 ou 2
 
-consulta(15,data(1,1,2019),1,15,1,30). 
-consulta(15,data(1,1,2019),2,15,1,30). 
+excecao(consulta(15,data(1,1,2019),1,15,1,30)). 
+excecao(consulta(15,data(1,1,2019),2,15,1,30)). 
 
 
 % não se sabe se o medico de id 15 tem 21 ou 22 anos
 
-medico(15,goncalo,21,fisioterapia,hospital_trofa_2).
-medico(15,goncalo,22,fisioterapia,hospital_trofa_2).
+excecao(medico(15,goncalo,21,fisioterapia,hospital_trofa_2)).
+excecao(medico(15,goncalo,22,fisioterapia,hospital_trofa_2)).
 
 
 
