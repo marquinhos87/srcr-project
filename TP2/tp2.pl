@@ -305,6 +305,7 @@ medico(20,marco,47,oncologia,xInstituicao).
 
 %--------------------------------------------------------------------------------------------------------------------------------
 %Representação do meta-predicado nulo : valor -> {V,F}
+
 nulo(xIdade).
 nulo(data(xDia,xMes,xAno)).
 nulo(xDia).
@@ -414,11 +415,11 @@ evolucao( utente(A, B, C, D) ) :-  demo(utente(A, B, _, _), R),
 % atualização dos dados
 evolucao( utente(A, B, C, D) ) :-  demo(utente(A, B, C, D),R),
 								   R = desconhecido,
-								   solucoes(utente(A, H, I, J), utente(A, H, I, J), L),
+								   solucoes(utente(A, E, F, G), utente(A, E, F, G), L),
 								   comprimento(L, S),
 								   S > 0,
-								   registar(utente(A, B, C, D)),
-								   removeBC(L).
+								   removeBC(L),
+								   registar(utente(A, B, C, D)).
 
 evolucao( utente(A, B, C, D) ) :-  demo(utente(A, B, C, D), R),
 								   R = falso,										 
@@ -436,8 +437,8 @@ evolucao( servico(A, B, C, D) ) :-  demo(servico(A, B, C, D), R),
 									solucoes(servico(A, E, F, G), servico(A, E, F, G), L),
 									comprimento(L, S),
 									S > 0,
-								    registar(servico(A, B, C, D)),
-									removeBC(L).
+									removeBC(L),
+								    registar(servico(A, B, C, D)).
 
 evolucao( servico(A, B, C, D) ) :-  demo(servico(A, B, C, D), R),
 									R = falso,										 
@@ -455,8 +456,8 @@ evolucao( consulta(A, B, C, D, E, F) ) :-  demo(consulta(A, B, C, D, E, F), R),
 									  	   solucoes(consulta(A, G, H, I, J, K), consulta(A, G, H, I, J, K), L),
 										   comprimento(L, S),
 										   S > 0,
-										   registar(consulta(A, B, C, D, E, F)),
-										   removeBC(L).
+										   removeBC(L),
+										   registar(consulta(A, B, C, D, E, F)).
 
 evolucao( consulta(A, B, C, D, E, F) ) :-  demo(consulta(A, B, C, D, E, F), R),
 										   R = falso,										 
