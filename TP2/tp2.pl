@@ -35,17 +35,6 @@
 %Funções auxiliares
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Extensão do predicado de sum: Lista,Resultado -> {V,F}
-%calcula o comprimento de uma lista
-sum([],0).
-sum([H|T],R) :- sum(T,S), R is S + H.
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Extensão do predicado de entre: Numero,Numero,Numero -> {V,F}
-%compara se o ultimo inteiro está entre os dois primeiros
-entre(A,B,C) :- A =< C, B >= C.
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Extensão do predicado de teste: Lista -> {V,F}
 %testa todos os elementos da Lista
 teste([]).
@@ -73,12 +62,6 @@ comprimento([H|T],N) :- comprimento(T,X), N is X+1.
 %Extensão do predicado de solucoes: Tipo,Condicao,Lista -> {V,F}
 %utiliza o findall para encontrar todo o conhecimento que corresponda à condição
 solucoes(T,C,S) :- findall(T,C,S).
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Extensão do predicado de evolucao: Termo -> {V,F}
-evolucao(Termo) :- solucoes(I, +Termo::I,Lista),
-				   insercao(Termo),
-				   teste(Lista).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Extensão do predicado de involucao: Termo -> {V,F}
@@ -170,7 +153,6 @@ medico(4,joaquim, 44,cirurgia,hospital_braga).
 % -------------------------------------------------------------------------------------------------------------------------------
 % Conhecimento Desconhecido
 
-
 % utente: IdUt,Nome,Idade,Cidade
 % possíveis valores desconhecidos : Idade,Cidade
 
@@ -247,7 +229,6 @@ excecao(medico(A,B,C,D,E)) :- medico(A,B,X,Y,E),
 % -------------------------------------------------------------------------------------------------------------------------------
 % Conhecimento  imperfeito incerto
 
-
 %Para o utente de id 15, ninguém sabe a idade, mas sabe-se que não tem 20 anos
 utente(15,anabela,xIdade,guimaraes).
 -utente(15,anabela,20,guimaraes).
@@ -322,11 +303,8 @@ medico(20,marco,47,oncologia,xInstituicao).
                   comprimento(L,S),
                   S == 0).
 
-
 %--------------------------------------------------------------------------------------------------------------------------------
 %Representação do meta-predicado nulo : valor -> {V,F}
-
-
 nulo(xIdade).
 nulo(data(xDia,xMes,xAno)).
 nulo(xDia).
@@ -357,7 +335,6 @@ nulo(xInstituicao).
 
 % nao permitir a remoção de uma excecao
 -excecao(T) :: ( no ).
-
 
 %para Utente
 +utente(ID,_,_,_) :: (solucoes(ID,utente(ID,_,_,_),S),
@@ -427,8 +404,6 @@ removeBC([H|T]) :- retract(H), removeBC(T).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % evolucao do conhecimento
 %Extensao do predicado evolucao: Termo -> {V, F, D}
-
-
 evolucao( utente(A, B, C, D) ) :-  demo(utente(A, B, C, _), R),
 			                       R = desconhecido,
 								   solucoes(utente(A, E, F, G), utente(A, E, F, G), L),
@@ -448,8 +423,6 @@ evolucao( utente(A, B, C, D) ) :-  demo(utente(A, B, C, D), R),
 								   R = falso,										 
 								   registar(utente(A, B, C, D)).
 
-
-
 evolucao( servico(A, B, C, D) ) :-  demo(servico(A, B, _, D), R),
 									R = desconhecido,
 									solucoes(servico(A, E, F, G), servico(A, E, F, G), L),
@@ -468,8 +441,6 @@ evolucao( servico(A, B, C, D) ) :-  demo(servico(A, B, C, D), R),
 evolucao( servico(A, B, C, D) ) :-  demo(servico(A, B, C, D), R),
 									R = falso,										 
 									registar(servico(A, B, C, D)).
-
-
 
 evolucao( consulta(A, B, C, D, E, F) ) :-  demo(consulta(A, B, C, D, _, F), R),
 									  	   R = desconhecido,
@@ -494,23 +465,16 @@ evolucao( excecao(Termo) ) :- registar(excecao(Termo)).
 
 -evolucao(T) :- demo(T,verdadeiro).
 
-
 % Extensao do predicado registar: #T -> {V,F}   
 registar( Termo ) :- (solucoes(Invariante, +Termo::Invariante,Lista),
 					 insercao(Termo),
 					 teste(Lista)).
 
-
-
 %PMF para o predicado registar
 -registar(Termo).
 
-
-
-% Remover utentes, prestadores e cuidados de saúde
-
+% Remover utentes, servicos, medicos e consultas
 % Extensao do predicado remover: T -> {V,F,D}   
-
 
 remover( Termo ) :-	(solucoes(Invariante, -Termo::Invariante,Lista),
 					teste(Lista)),
@@ -519,21 +483,18 @@ remover( Termo ) :-	(solucoes(Invariante, -Termo::Invariante,Lista),
 -remover(Termo) :- excecao( Termo ),
 				   nao( Termo ).
 
-
-
-
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Tópico 5 sistema de inferencia
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do meta-predicado demoConjunto: Questao,Resposta -> {V,F}
-
-demoConjunto(Q1/\Q2, R):- demoConjunto(Q2,R1),  %DISJUNÇÃO
+demoConjunto(Q1/\Q2, R):- demoConjunto(Q2,R1),  % conjunção
            demoConjunto(Q1,R2),
            conjuncao(R1,R2,R).  % faz a conjunção das respostas anteriores
 
-demoConjunto(Q1\/Q2, R):- demoConjunto(Q2,R1),  %CONJUNÇÃO
+demoConjunto(Q1\/Q2, R):- demoConjunto(Q2,R1),  % disjunção
            demoConjunto(Q1,R2),
            disjuncao(R1,R2,R).  % faz a disjunção das respostas anteriores
 
@@ -545,11 +506,10 @@ demoConjunto(Q1\Q2, R):- demoConjunto(Q2,R1),  % implicacao
            demoConjunto(Q1,R2),
            implicacao(R1,R2,R).
 
-demoConjunto(Q, R):- demo(Q,R).               %CASO normal, uma questão
+demoConjunto(Q, R):- demo(Q,R).               %caso normal, uma questão
 
-
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do meta-predicado disjuncao: A , B , Resposta -> {V,F}
-
 % soluções possíveis entre o desconhecido e o verdadeiro
 disjuncao(desconhecido, verdadeiro, verdadeiro).
 disjuncao(verdadeiro, desconhecido, verdadeiro).
@@ -567,13 +527,13 @@ disjuncao(falso, falso, falso).
 % disjuncao do desconhecido
 disjuncao(desconhecido, desconhecido, desconhecido).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do meta-predicado conjuncao: A , B , Resposta -> {V,F}
-
-% assumiu-se que a sua conjuncao do elemento neutro da conjunção com desconhecido teria a resposta desconhecido
+% soluções possíveis entre o desconhecido e o verdadeiro
 conjuncao(verdadeiro, desconhecido, desconhecido). 
 conjuncao(desconhecido, verdadeiro, desconhecido).
 
-%assumiu-se que a sua conjuncao do elemento absorvente da conjunção com desconhecido teria a resposta falso
+% soluções possíveis entre o desconhecido e o falso
 conjuncao(falso, desconhecido, falso).
 conjuncao(desconhecido, falso, falso).
 
@@ -583,41 +543,45 @@ conjuncao(falso, falso, falso).
 conjuncao(falso, verdadeiro, falso).
 conjuncao(verdadeiro, falso, falso).
 
-% a conjunção de todos os valores de verdade desconhecido tem como resposta desconhecido
+% conjuncao do desconhecido
 conjuncao(desconhecido, desconhecido, desconhecido).
 
-
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do meta-predicado implicacao: A, B, Resposta -> {V,F}
-
 % tabela de verdade tradicional para a implicação
 implicacao(verdadeiro, verdadeiro, verdadeiro).
 implicacao(falso, falso, verdadeiro).
 implicacao(falso, verdadeiro, verdadeiro).
 implicacao(verdadeiro, falso, falso).
 
+% soluções possíveis entre o desconhecido e o verdadeiro
 implicacao(verdadeiro, desconhecido, desconhecido). 
-implicacao(desconhecido, verdadeiro, desconhecido).  % aqui tou na dúvida se meto desconhecido ou verdadeiro
+implicacao(desconhecido, verdadeiro, verdadeiro).
 
-implicacao(falso, desconhecido, verdadeiro).    % VERIFIQUEM SE CONCORDAM COM ISTO!!!
+% soluções possíveis entre o desconhecido e o falso
+implicacao(falso, desconhecido, verdadeiro).
 implicacao(desconhecido, falso, desconhecido).
 
+% implicacao do desconhecido
 implicacao(desconhecido,desconhecido,desconhecido).
 
-
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do meta-predicado disjuncaoExplicita: A, B, Resposta -> {V,F}
-
 % tabela de verdade tradicional para a implicação
 disjuncaoExplicita(verdadeiro, verdadeiro, falso).
 disjuncaoExplicita(falso, falso, falso).
 disjuncaoExplicita(falso, verdadeiro, verdadeiro).
 disjuncaoExplicita(verdadeiro, falso, verdadeiro).
 
+% soluções possíveis entre o desconhecido e o verdadeiro
 disjuncaoExplicita(verdadeiro,desconhecido,desconhecido).
 disjuncaoExplicita(desconhecido,verdadeiro,desconhecido).
 
+% soluções possíveis entre o desconhecido e o falso
 disjuncaoExplicita(falso,desconhecido,desconhecido).
 disjuncaoExplicita(desconhecido,falso,desconhecido).
 
+% implicacao do desconhecido
 disjuncaoExplicita(desconhecido,desconhecido,desconhecido).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
