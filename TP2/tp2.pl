@@ -476,7 +476,7 @@ registar( Termo ) :- (solucoes(Invariante, +Termo::Invariante,Lista),
 
 
 % involucao utentes, servicos, medicos e consultas
-% Extensao do predicado involucao: T -> {V,F,D}   
+% Extensao do predicado involucao: T -> {V,F}   
 
 involucao( Termo ) :-	(solucoes(Invariante, -Termo::Invariante,Lista),
 					    teste(Lista)),
