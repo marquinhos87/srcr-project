@@ -639,11 +639,7 @@ remover( Termo ) :-	(solucoes(Invariante, -Termo::Invariante,Lista),
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Tópico 5 sistema de inferencia
 
-
 % Extensao do meta-predicado demoConjunto: Questao,Resposta -> {V,F}
-% este meta-predicado é pq o demo apenas consegue responder a questões isoladas, 
-% logo necessita-se de um predicado que faça a análise questão a questão, que é 
-% o demoConjunto, a resposta pode ser verdadeiro, falso, desconhecido
 
 demoConjunto(Q1/\Q2, R):- demoConjunto(Q2,R1),  %DISJUNÇÃO
            demoConjunto(Q1,R2),
@@ -653,8 +649,15 @@ demoConjunto(Q1\/Q2, R):- demoConjunto(Q2,R1),  %CONJUNÇÃO
            demoConjunto(Q1,R2),
            disjuncao(R1,R2,R).  % faz a disjunção das respostas anteriores
 
-demoConjunto(Q, R):- demo(Q,R).               %CASO normal, uma questão
+demoConjunto(Q1+Q2, R):- demoConjunto(Q2,R1),  % disjunção explicíta
+           demoConjunto(Q1,R2),
+           disjuncaoExplicita(R1,R2,R).
 
+demoConjunto(Q1\Q2, R):- demoConjunto(Q2,R1),  % implicacao
+           demoConjunto(Q1,R2),
+           implicacao(R1,R2,R).
+
+demoConjunto(Q, R):- demo(Q,R).               %CASO normal, uma questão
 
 
 % Extensao do meta-predicado disjuncao: A , B , Resposta -> {V,F}
@@ -694,5 +697,39 @@ conjuncao(verdadeiro, falso, falso).
 
 % a conjunção de todos os valores de verdade desconhecido tem como resposta desconhecido
 conjuncao(desconhecido, desconhecido, desconhecido).
+
+
+% Extensao do meta-predicado implicacao: A, B, Resposta -> {V,F}
+
+% tabela de verdade tradicional para a implicação
+implicacao(verdadeiro, verdadeiro, verdadeiro).
+implicacao(falso, falso, verdadeiro).
+implicacao(falso, verdadeiro, verdadeiro).
+implicacao(verdadeiro, falso, falso).
+
+implicacao(verdadeiro, desconhecido, desconhecido). 
+implicacao(desconhecido, verdadeiro, desconhecido).  % aqui tou na dúvida se meto desconhecido ou verdadeiro
+
+implicacao(falso, desconhecido, verdadeiro).    % VERIFIQUEM SE CONCORDAM COM ISTO!!!
+implicacao(desconhecido, falso, desconhecido).
+
+implicacao(desconhecido,desconhecido,desconhecido).
+
+
+% Extensao do meta-predicado disjuncaoExplicita: A, B, Resposta -> {V,F}
+
+% tabela de verdade tradicional para a implicação
+disjuncaoExplicita(verdadeiro, verdadeiro, falso).
+disjuncaoExplicita(falso, falso, falso).
+disjuncaoExplicita(falso, verdadeiro, verdadeiro).
+disjuncaoExplicita(verdadeiro, falso, verdadeiro).
+
+disjuncaoExplicita(verdadeiro,desconhecido,desconhecido).
+disjuncaoExplicita(desconhecido,verdadeiro,desconhecido).
+
+disjuncaoExplicita(falso,desconhecido,desconhecido).
+disjuncaoExplicita(desconhecido,falso,desconhecido).
+
+disjuncaoExplicita(desconhecido,desconhecido,desconhecido).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
