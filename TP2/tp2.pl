@@ -26,6 +26,7 @@
 :- dynamic(consulta/6).
 :- dynamic(data/3).
 :- dynamic(medico/5).
+:- dynamic(excecao/1).
 
 :- op(900,xfy,'::').
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
