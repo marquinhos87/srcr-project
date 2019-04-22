@@ -64,12 +64,6 @@ comprimento([H|T],N) :- comprimento(T,X), N is X+1.
 solucoes(T,C,S) :- findall(T,C,S).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Extensão do predicado de evolucao: Termo -> {V,F}
-evolucao(Termo) :- solucoes(I, +Termo::I,Lista),
-				   insercao(Termo),
-				   teste(Lista).
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Extensão do predicado de involucao: Termo -> {V,F}
 involucao(Termo) :- solucoes(I, -Termo::I,Lista),
 					remocao(Termo),
