@@ -411,13 +411,13 @@ evolucao( utente(A, B, C, D) ) :-  demo(utente(A, B, C, _), R),
 								   S == 0,
 								   registar( excecao(utente(A, B, C, D)) ).
 % atualização dos dados
-evolucao( utente(A, B, C, D) ) :-  demo(utente(A, B, C, D),
+evolucao( utente(A, B, C, D ) ) :-  demo(utente(A, B, C, D), R),
 								   R = desconhecido,
 								   solucoes(utente(A, H, I, J), utente(A, H, I, J), L),
 								   comprimento(L, S),
 								   S > 0,
-								   registar(utente(A, B, C, D)),
-								   removeBC(L).
+								   registar(utente(A, B, C, D)), 
+                   removeBC(L).
 
 evolucao( utente(A, B, C, D) ) :-  demo(utente(A, B, C, D), R),
 								   R = falso,										 
