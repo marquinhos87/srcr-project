@@ -541,7 +541,7 @@ demoConjunto(Q1+Q2, R):- demoConjunto(Q2,R1),  % disjunção explicíta
            demoConjunto(Q1,R2),
            disjuncaoExplicita(R1,R2,R).
 
-demoConjunto(Q1-Q2, R):- demoConjunto(Q2,R1),  % implicacao
+demoConjunto(Q1\Q2, R):- demoConjunto(Q2,R1),  % implicacao
            demoConjunto(Q1,R2),
            implicacao(R1,R2,R).
 
