@@ -172,10 +172,7 @@ medico(4,joaquim, 44,cirurgia,hospital_braga).
 
 
 % utente: IdUt,Nome,Idade,Cidade
-% possíveis valores desconhecidos : Nome,Idade,Cidade
-
-excecao(utente(A,B,C,D)) :- utente(A,X,C,D),
-                            nulo(X).
+% possíveis valores desconhecidos : Idade,Cidade
 
 excecao(utente(A,B,C,D)) :- utente(A,B,X,D),
                             nulo(X).
@@ -183,25 +180,13 @@ excecao(utente(A,B,C,D)) :- utente(A,B,X,D),
 excecao(utente(A,B,C,D)) :- utente(A,B,C,X),
                             nulo(X).
 
-excecao(utente(A,B,C,D)) :- utente(A,X,Y,D),
-                            nulo(X),
-                            nulo(Y).
-
-excecao(utente(A,B,C,D)) :- utente(A,X,C,Y),
-                            nulo(X),
-                            nulo(Y).
-
 excecao(utente(A,B,C,D)) :- utente(A,B,X,Y),
                             nulo(X),
                             nulo(Y).
 
-excecao(utente(A,B,C,D)) :- utente(A,X,Y,Z),
-                            nulo(X),
-                            nulo(Y),
-                            nulo(Z).
 
 % servico: IdServ,Descrição,Instituição,Cidade
-% possíveis valores desconhecidos : Descrição,Instituição,Cidade
+% possíveis valores desconhecidos : Descrição,Instituição
 
 excecao(servico(A,B,C,D)) :- servico(A,X,C,D),
                              nulo(X).
@@ -209,28 +194,13 @@ excecao(servico(A,B,C,D)) :- servico(A,X,C,D),
 excecao(servico(A,B,C,D)) :- servico(A,B,X,D),
                              nulo(X).
 
-excecao(servico(A,B,C,D)) :- servico(A,B,C,X),
-                             nulo(X).
-
 excecao(servico(A,B,C,D)) :- servico(A,X,Y,D),
                              nulo(X),
                              nulo(Y).
 
-excecao(servico(A,B,C,D)) :- servico(A,X,C,Y),
-                             nulo(X),
-                             nulo(Y).
-
-excecao(servico(A,B,C,D)) :- servico(A,B,X,Y),
-                             nulo(X),
-                             nulo(Y).
-
-excecao(servico(A,B,C,D)) :- servico(A,X,Y,Z),
-                             nulo(X),
-                             nulo(Y),
-                             nulo(Z).
 
 % consulta: Id,Data,IdUt,IdServ,IdMedico,Custo
-% possíveis valores desconhecidos: Data,IdUt,IdServ,IdMedico,Custo
+% possíveis valores desconhecidos: Data,IdUt,IdMedico
 
 excecao(consulta(A,B,C,D,E,F)) :- consulta(A,X,C,D,E,F),
                                   nulo(X).
@@ -238,13 +208,7 @@ excecao(consulta(A,B,C,D,E,F)) :- consulta(A,X,C,D,E,F),
 excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,X,D,E,F),
                                   nulo(X).
 
-excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,C,X,E,F),
-                                  nulo(X).
-
 excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,C,D,X,F),
-                                  nulo(X).
-
-excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,C,D,E,X),
                                   nulo(X).
 
 excecao(consulta(A,B,C,D,E,F)) :- consulta(A,X,Y,D,E,F),
@@ -257,19 +221,7 @@ excecao(consulta(A,B,C,D,E,F)) :- consulta(A,X,Y,D,E,F),
                                   nulo(X),
                                   nulo(Y).
 
-excecao(consulta(A,B,C,D,E,F)) :- consulta(A,X,C,Y,E,F),
-                                  nulo(X),
-                                  nulo(Y).
-
 excecao(consulta(A,B,C,D,E,F)) :- consulta(A,X,C,D,Y,F),
-                                  nulo(X),
-                                  nulo(Y).
-
-excecao(consulta(A,B,C,D,E,F)) :- consulta(A,X,C,D,E,Y),
-                                  nulo(X),
-                                  nulo(Y).
-
-excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,X,Y,E,F),
                                   nulo(X),
                                   nulo(Y).
 
@@ -277,27 +229,9 @@ excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,X,D,Y,F),
                                   nulo(X),
                                   nulo(Y).
 
-excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,X,D,E,Y),
-                                  nulo(X),
-                                  nulo(Y).
-
-excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,C,X,Y,F),
-                                  nulo(X),
-                                  nulo(Y).
-
-excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,C,X,E,Y),
-                                  nulo(X),
-                                  nulo(Y).
-
-excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,C,D,X,Y),
-                                  nulo(X),
-                                  nulo(Y).
 
 % medico: Id,Nome, Idade, Especialidade, Instituição
-%possíveis valores desconhecidos: Nome,Idade,Especialidade,Instituição
-
-excecao(medico(A,B,C,D,E)) :- medico(A,X,C,D,E),
-                              nulo(X).
+%possíveis valores desconhecidos: Idade,Especialidade
 
 excecao(medico(A,B,C,D,E)) :- medico(A,B,X,D,E),
                               nulo(X).
@@ -305,58 +239,9 @@ excecao(medico(A,B,C,D,E)) :- medico(A,B,X,D,E),
 excecao(medico(A,B,C,D,E)) :- medico(A,B,C,X,E),
                               nulo(X).
 
-excecao(medico(A,B,C,D,E)) :- medico(A,B,C,D,X),
-                              nulo(X).
-
-excecao(medico(A,B,C,D,E)) :- medico(A,X,Y,D,E),
-                              nulo(X),
-                              nulo(Y).
-
-excecao(medico(A,B,C,D,E)) :- medico(A,X,C,Y,E),
-                              nulo(X),
-                              nulo(Y).
-
-excecao(medico(A,B,C,D,E)) :- medico(A,X,C,D,Y),
-                              nulo(X),
-                              nulo(Y).
-
 excecao(medico(A,B,C,D,E)) :- medico(A,B,X,Y,E),
                               nulo(X),
                               nulo(Y).
-
-excecao(medico(A,B,C,D,E)) :- medico(A,B,X,D,Y),
-                              nulo(X),
-                              nulo(Y).
-
-excecao(medico(A,B,C,D,E)) :- medico(A,B,C,X,Y),
-                              nulo(X),
-                              nulo(Y).
-
-excecao(medico(A,B,C,D,E)) :- medico(A,X,Y,Z,E),
-                              nulo(X),
-                              nulo(Y),
-                              nulo(Z).
-
-excecao(medico(A,B,C,D,E)) :- medico(A,X,Y,D,Z),
-                              nulo(X),
-                              nulo(Y),
-                              nulo(Z).
-
-excecao(medico(A,B,C,D,E)) :- medico(A,X,C,Y,Z),
-                              nulo(X),
-                              nulo(Y),
-                              nulo(Z).
-
-excecao(medico(A,B,C,D,E)) :- medico(A,B,X,Y,Z),
-                              nulo(X),
-                              nulo(Y),
-                              nulo(Z).
-
-excecao(medico(A,B,C,D,E)) :- medico(A,X,Y,Z,J),
-                              nulo(X),
-                              nulo(Y),
-                              nulo(Z),
-                              nulo(J).
 
 
 % -------------------------------------------------------------------------------------------------------------------------------
@@ -444,6 +329,9 @@ medico(20,marco,47,oncologia,xInstituicao).
 
 nulo(xIdade).
 nulo(data(xDia,xMes,xAno)).
+nulo(xDia).
+nulo(xMes).
+nulo(xAno).
 nulo(xEspecialidade).
 nulo(xDescricao).
 nulo(xCidade).
