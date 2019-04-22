@@ -369,25 +369,25 @@ nulo(xInstituicao).
                 N == 1
                 ).
 
-%Apenas se pode remover utentes caso não tenham consultas associadas
+%Apenas se pode involucao utentes caso não tenham consultas associadas
 -utente(Id,_,_,_) :: (solucoes( Id,(consulta(_,_,Id,_,_,_)),S ),
             comprimento( S,N ), 
             N == 0
                       ).
 
-%Apenas se pode remover médicos caso não tenham consultas associadas
+%Apenas se pode involucao médicos caso não tenham consultas associadas
 -medico(Id,_,_,_) :: (solucoes( Id,(consulta(_,_,_,_,Id,_)),S ),
             comprimento( S,N ), 
             N == 0
                       ).
 
-%Apenas se pode remover serviços caso não tenham consultas associadas
+%Apenas se pode involucao serviços caso não tenham consultas associadas
 -servico(Id,_,_,_) :: (solucoes( Id,(consulta(_,_,_,Id,_,_)),S ),
              comprimento( S,N ), 
              N == 0
                        ).
 
-%Não convêm remover consultas por isso não o permitimos com este Invariante
+%Não convêm involucao consultas por isso não o permitimos com este Invariante
 -consulta(_,_,_,_,_,_) :: (no).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
@@ -404,14 +404,15 @@ removeBC([H|T]) :- retract(H), removeBC(T).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % evolucao do conhecimento
 %Extensao do predicado evolucao: Termo -> {V, F, D}
-evolucao( utente(A, B, C, D) ) :-  demo(utente(A, B, C, _), R),
+
+evolucao( utente(A, B, C, D) ) :-  demo(utente(A, B, _, _), R),
 			                       R = desconhecido,
 								   solucoes(utente(A, E, F, G), utente(A, E, F, G), L),
 								   comprimento(L, S),
 								   S == 0,
 								   registar( excecao(utente(A, B, C, D)) ).
 % atualização dos dados
-evolucao( utente(A, B, C, D) ) :-  demo(utente(A, B, C, D),
+evolucao( utente(A, B, C, D) ) :-  demo(utente(A, B, C, D),R),
 								   R = desconhecido,
 								   solucoes(utente(A, H, I, J), utente(A, H, I, J), L),
 								   comprimento(L, S),
@@ -473,15 +474,15 @@ registar( Termo ) :- (solucoes(Invariante, +Termo::Invariante,Lista),
 %PMF para o predicado registar
 -registar(Termo).
 
-% Remover utentes, servicos, medicos e consultas
-% Extensao do predicado remover: T -> {V,F,D}   
+% involucao utentes, servicos, medicos e consultas
+% Extensao do predicado involucao: T -> {V,F,D}   
 
-remover( Termo ) :-	(solucoes(Invariante, -Termo::Invariante,Lista),
-					teste(Lista)),
-					remocao(Termo).
+involucao( Termo ) :-	(solucoes(Invariante, -Termo::Invariante,Lista),
+					    teste(Lista)),
+					    remocao(Termo).
 
--remover(Termo) :- excecao( Termo ),
-				   nao( Termo ).
+-involucao(Termo) :- excecao( Termo ),
+			    	 nao( Termo ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
