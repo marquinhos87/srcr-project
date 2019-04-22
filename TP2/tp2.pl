@@ -87,7 +87,7 @@ nao(Questao).
 %Tópico 1 -> Conhecimento Positivo e Negativo
 
 % Conhecimento Positivo
-%Extenção do predicado utente: IdUt,Nome,Idade,Cidade -> {V,F,D}
+%Extenção do predicado utente: IdUt,Nome,Idade,Cidade -> {V,F}
 utente(1,joao,22,lisboa).
 utente(2,carlos,15,beja).
 utente(3,alfredo,45,braga).
@@ -99,7 +99,7 @@ utente(8,bruno,44,aveiro).
 utente(9,nuno,33,porto).
 utente(10,pedro,70,coimbra).
 
-%Extenção do predicado servico: IdServ,Descrição,Instituição,Cidade -> {V,F,D}
+%Extenção do predicado servico: IdServ,Descrição,Instituição,Cidade -> {V,F}
 servico(1,urgencias,hospital_braga,braga).
 servico(2,autopsias,hospital_braga,braga).
 servico(3,geral,hospital_braga,braga).
@@ -115,7 +115,7 @@ servico(12,tumografia,hospital_braga, braga).
 servico(13,dermatologia,hospital_coimbra,coimbra).
 servico(14,rinoplastia, hospital_lisboa, lisboa).
 
-%Extenção do predicado consulta: Id,Data,IdUt,IdServ,IdMedico, Custo -> {V,F,D}
+%Extenção do predicado consulta: Id,Data,IdUt,IdServ,IdMedico, Custo -> {V,F}
 consulta(1,data(11,2,2019),1,1,1,15).
 consulta(2,data(12,3,2018),2,2,4,20).
 consulta(3,data(13,1,2019),3,3,1,25).
@@ -123,26 +123,26 @@ consulta(4,data(25,8,2017),4,1,4,15).
 consulta(5,data(2,10,2007),5,15,1,30).
 consulta(6,data(17,5,2018),9,8,2,30).
 
-%Extenção do predicado medico: Id,Nome, Idade, Especialidade, Instituição -> {V,F,D}
+%Extenção do predicado medico: Id,Nome, Idade, Especialidade, Instituição -> {V,F}
 medico(1,jose,30,pediatria,hospital_braga).
 medico(2,joao,35,radiologia,hospital_porto).
 medico(3,pedro,50,ginecologia,hospital_coimbra).
 medico(4,joaquim, 44,cirurgia,hospital_braga).
 
 % Conhecimento Negativo
-%Extenção do predicado utente: IdUt,Nome,Idade,Cidade -> {V,F,D}
+%Extenção do predicado utente: IdUt,Nome,Idade,Cidade -> {V,F}
 -utente(11,nuno,33,porto).
 -utente(12,pedro,70,coimbra).
 
-%Extenção do predicado servico: IdServ,Descrição,Instituição,Cidade -> {V,F,D}
+%Extenção do predicado servico: IdServ,Descrição,Instituição,Cidade -> {V,F}
 -servico(15,dermatologia,hospital_coimbra,coimbra).
 -servico(16,rinoplastia, hospital_lisboa, lisboa).
 
-%Extenção do predicado consulta: Id,Data,IdUt,IdServ,IdMedico, Custo -> {V,F,D}
+%Extenção do predicado consulta: Id,Data,IdUt,IdServ,IdMedico, Custo -> {V,F}
 -consulta(7,data(15,8,2019),11,15,6,45).
 -consulta(8,data(1,12,2017),12,16,5,50).
 
-%Extenção do predicado medico: Id,Nome, Idade, Especialidade, Instituição -> {V,F,D}
+%Extenção do predicado medico: Id,Nome, Idade, Especialidade, Instituição -> {V,F}
 -medico(5,joana,50,radiografia,hospital_trofa_1).
 -medico(6,miguel, 44,cirurgia,hospital_porto).
 
@@ -473,6 +473,7 @@ registar( Termo ) :- (solucoes(Invariante, +Termo::Invariante,Lista),
 
 %PMF para o predicado registar
 -registar(Termo).
+
 
 % involucao utentes, servicos, medicos e consultas
 % Extensao do predicado involucao: T -> {V,F,D}   
