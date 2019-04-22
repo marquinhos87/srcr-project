@@ -220,11 +220,11 @@ medico(4,joaquim, 44,cirurgia,hospital_braga).
 
 
 
-%representação :
+% Representações:
 
 
-% Conhecimento Desconhecido -----------------------------------------------------------------------
-
+% -------------------------------------------------------------------------------------------------------------------------------
+% Conhecimento Desconhecido
 
 
 % utente: IdUt,Nome,Idade,Cidade
@@ -430,8 +430,8 @@ excecao(medico(A,B,C,D,E)) :- medico(A,X,Y,Z,J),
 
 
 
-% Conhecimento  imperfeito incerto -------------------------------------------------------------
-
+% -------------------------------------------------------------------------------------------------------------------------------
+% Conhecimento  imperfeito incerto
 
 
 %Para o utente de id 15, ninguém sabe a idade, mas sabe-se que não tem 20 anos
@@ -537,7 +537,7 @@ medico(20,marco,47,oncologia,xInstituicao).
                   S == 0).
 
 
-
+%--------------------------------------------------------------------------------------------------------------------------------
 %Representação do meta-predicado nulo : valor -> {V,F}
 
 
@@ -548,8 +548,6 @@ nulo(xDescricao).
 nulo(xCidade).
 nulo(xMedico).
 nulo(xInstituicao).
-
-
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
