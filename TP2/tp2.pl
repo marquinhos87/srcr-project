@@ -404,20 +404,20 @@ removeBC([H|T]) :- retract(H), removeBC(T).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % evolucao do conhecimento
 %Extensao do predicado evolucao: Termo -> {V, F, D}
-evolucao( utente(A, B, C, D) ) :-  demo(utente(A, B, C, _), R),
-			                       R = desconhecido,
-								   solucoes(utente(A, E, F, G), utente(A, E, F, G), L),
-								   comprimento(L, S),
-								   S == 0,
-								   registar( excecao(utente(A, B, C, D)) ).
+evolucao( utente(A, B, C, D) ) :- demo(utente(A, B, C, _), R),
+			                        R = desconhecido,
+								    solucoes(utente(A, E, F, G), utente(A, E, F, G), L),
+								    comprimento(L, S),
+								    S == 0,
+								    registar( excecao(utente(A, B, C, D)) ).
 % atualização dos dados
 evolucao( utente(A, B, C, D ) ) :-  demo(utente(A, B, C, D), R),
-								   R = desconhecido,
-								   solucoes(utente(A, H, I, J), utente(A, H, I, J), L),
-								   comprimento(L, S),
-								   S > 0,
-								   registar(utente(A, B, C, D)), 
-                   removeBC(L).
+                  					R = desconhecido,
+                  					solucoes(utente(A, H, I, J), utente(A, H, I, J), L),
+                  					comprimento(L, S),
+                  					S > 0,
+                  					registar(utente(A, B, C, D)), 
+                                    removeBC(L).
 
 evolucao( utente(A, B, C, D) ) :-  demo(utente(A, B, C, D), R),
 								   R = falso,										 
