@@ -527,12 +527,6 @@ nulo(xInstituicao).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Tópico 5 sistema de inferencia
 
-
-% Extensao do meta-predicado demoConjunto: Questao,Resposta -> {V,F}
-% este meta-predicado é pq o demo apenas consegue responder a questões isoladas, 
-% logo necessita-se de um predicado que faça a análise questão a questão, que é 
-% o demoConjunto, a resposta pode ser verdadeiro, falso, desconhecido
-
 % Extensao do meta-predicado demoConjunto: Questao,Resposta -> {V,F}
 
 demoConjunto(Q1/\Q2, R):- demoConjunto(Q2,R1),  %DISJUNÇÃO
@@ -551,9 +545,7 @@ demoConjunto(Q1-Q2, R):- demoConjunto(Q2,R1),  % implicacao
            demoConjunto(Q1,R2),
            implicacao(R1,R2,R).
 
-
 demoConjunto(Q, R):- demo(Q,R).               %CASO normal, uma questão
-
 
 
 % Extensao do meta-predicado disjuncao: A , B , Resposta -> {V,F}
