@@ -338,7 +338,7 @@ nulo(xInstituicao).
 -excecao(T) :: ( no ).
 
 %para Utente
-+utente(ID,_,_,_) :: (solucoes(ID,utente(ID,_,_,_),S),
++utente(ID,Nome,Idade,Cidade) :: (solucoes(ID,utente(ID,Nome,Idade,Cidade),S),
             comprimento(S,N),
             N == 1
             ).
