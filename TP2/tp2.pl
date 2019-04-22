@@ -26,10 +26,11 @@
 :- dynamic(consulta/6).
 :- dynamic(data/3).
 :- dynamic(medico/5).
+:- dynamic(excecao/1).
 
 :- op(900,xfy,'::').
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%PODEM NAO SER NECESSARIAS ALGUMAS
+
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Funções auxiliares
 
@@ -86,91 +87,23 @@ involucao(Termo) :- solucoes(I, -Termo::I,Lista),
 					teste(Lista).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Extensao do meta-predicado si: Questao,Resposta -> {V,F}
+% Extensao do meta-predicado demo: Questao , Resposta -> {V,F}
 %                            Resposta = {verdadeiro,falso,desconhecido}
-si(Questao,verdadeiro) :- Questao.
-si(Questao,falso) :- -Questao.
-si(Questao,desconhecido) :- nao(Questao), nao(-Questao).
+demo(Questao,verdadeiro) :- Questao.
+demo(Questao,falso) :- -Questao.
+demo(Questao,desconhecido) :- nao(Questao), nao(-Questao).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do meta-predicado nao: Questao -> {V,F}
-
 nao(Questao) :- Questao, !, fail.
 nao(Questao).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Representação do predicado excecao
-%Utentes podem ter valores desconhecidos de Idade, Rua, Telemovel e Email (e algumas combinações entre estas)
-excecao().
-excecao().
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Representação do meta-predicado nulo : tag -> {V,F}
-nulo().
-nulo().
+%Tópico 1 -> Conhecimento Positivo e Negativo
 
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Invariantes Estruturais: nao permitir a insercao de conhecimento repetido
-
-%para Utente
-+utente(ID,_,_,_) :: (solucoes(ID,utente(ID,_,_,_),S),
-					  comprimento(S,N),
-					  N == 1
-					  ).
-
-%para Servico
-+servico(ID,_,_,_) :: (solucoes(ID,servico(ID,_,_,_),S),
-					   comprimento(S,N),
-					   N == 1
-					   ).
-
-%para Medico
-+medico(ID,_,_,_,_) :: (solucoes(ID,medico(ID,_,_,_,_),S),
-					   comprimento(S,N),
-					   N == 1
-					   ).
-
-%para verificar se já existe um Id de Consulta igual
-+consulta(ID,_,_,_,_,_) :: (solucoes(ID,(consulta(ID,_,_,_,_,_)), S),
-						   comprimento(S,N),
-					       N == 1
-						   ).
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Invariantes Referenciais:
-
-%para verificar se já existe o Utente e/ou Serviço
-+consulta(ID,_,IDU,IDS,IM,_) :: (solucoes(ID, (utente(IDU,_,_,_), servico(IDS,_,I,_), medico(IM,_,_,_,I)), S),
-								comprimento(S,N),
-								N == 1
-								).
-
-%Apenas se pode remover utentes caso não tenham consultas associadas
--utente(Id,_,_,_) :: (solucoes( Id,(consulta(_,_,Id,_,_,_)),S ),
-					  comprimento( S,N ), 
-					  N == 0
-                      ).
-
-%Apenas se pode remover médicos caso não tenham consultas associadas
--medico(Id,_,_,_) :: (solucoes( Id,(consulta(_,_,_,_,Id,_)),S ),
-					  comprimento( S,N ), 
-					  N == 0
-                      ).
-
-%Apenas se pode remover serviços caso não tenham consultas associadas
--servico(Id,_,_,_) :: (solucoes( Id,(consulta(_,_,_,Id,_,_)),S ),
-					   comprimento( S,N ), 
-					   N == 0
-                  	   ).
-
-%Não convêm remover consultas por isso não o permitimos com este Invariante
--consulta(_,_,_,_,_,_) :: (no).
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Tópico 1
-
+% Conhecimento Positivo
 %Extenção do predicado utente: IdUt,Nome,Idade,Cidade -> {V,F,D}
 utente(1,joao,22,lisboa).
 utente(2,carlos,15,beja).
@@ -213,15 +146,26 @@ medico(2,joao,35,radiologia,hospital_porto).
 medico(3,pedro,50,ginecologia,hospital_coimbra).
 medico(4,joaquim, 44,cirurgia,hospital_braga).
 
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Conhecimento Negativo
+%Extenção do predicado utente: IdUt,Nome,Idade,Cidade -> {V,F,D}
+-utente(11,nuno,33,porto).
+-utente(12,pedro,70,coimbra).
+
+%Extenção do predicado servico: IdServ,Descrição,Instituição,Cidade -> {V,F,D}
+-servico(15,dermatologia,hospital_coimbra,coimbra).
+-servico(16,rinoplastia, hospital_lisboa, lisboa).
+
+%Extenção do predicado consulta: Id,Data,IdUt,IdServ,IdMedico, Custo -> {V,F,D}
+-consulta(7,data(15,8,2019),11,15,6,45).
+-consulta(8,data(1,12,2017),12,16,5,50).
+
+%Extenção do predicado medico: Id,Nome, Idade, Especialidade, Instituição -> {V,F,D}
+-medico(5,joana,50,radiografia,hospital_trofa_1).
+-medico(6,miguel, 44,cirurgia,hospital_porto).
+
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Tópico 2 -> Conhecimento Imperfeito
-
-
-
-% Representações:
-
 
 % -------------------------------------------------------------------------------------------------------------------------------
 % Conhecimento Desconhecido
@@ -229,7 +173,6 @@ medico(4,joaquim, 44,cirurgia,hospital_braga).
 
 % utente: IdUt,Nome,Idade,Cidade
 % possíveis valores desconhecidos : Nome,Idade,Cidade
-
 
 excecao(utente(A,B,C,D)) :- utente(A,X,C,D),
                             nulo(X).
@@ -257,11 +200,8 @@ excecao(utente(A,B,C,D)) :- utente(A,X,Y,Z),
                             nulo(Y),
                             nulo(Z).
 
-
-
 % servico: IdServ,Descrição,Instituição,Cidade
 % possíveis valores desconhecidos : Descrição,Instituição,Cidade
-
 
 excecao(servico(A,B,C,D)) :- servico(A,X,C,D),
                              nulo(X).
@@ -272,32 +212,25 @@ excecao(servico(A,B,C,D)) :- servico(A,B,X,D),
 excecao(servico(A,B,C,D)) :- servico(A,B,C,X),
                              nulo(X).
 
-
 excecao(servico(A,B,C,D)) :- servico(A,X,Y,D),
                              nulo(X),
                              nulo(Y).
-
 
 excecao(servico(A,B,C,D)) :- servico(A,X,C,Y),
                              nulo(X),
                              nulo(Y).
 
-
 excecao(servico(A,B,C,D)) :- servico(A,B,X,Y),
                              nulo(X),
                              nulo(Y).
-
 
 excecao(servico(A,B,C,D)) :- servico(A,X,Y,Z),
                              nulo(X),
                              nulo(Y),
                              nulo(Z).
 
-
-
 % consulta: Id,Data,IdUt,IdServ,IdMedico,Custo
 % possíveis valores desconhecidos: Data,IdUt,IdServ,IdMedico,Custo
-
 
 excecao(consulta(A,B,C,D,E,F)) :- consulta(A,X,C,D,E,F),
                                   nulo(X).
@@ -360,11 +293,8 @@ excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,C,D,X,Y),
                                   nulo(X),
                                   nulo(Y).
 
-
-
 % medico: Id,Nome, Idade, Especialidade, Instituição
 %possíveis valores desconhecidos: Nome,Idade,Especialidade,Instituição
-
 
 excecao(medico(A,B,C,D,E)) :- medico(A,X,C,D,E),
                               nulo(X).
@@ -429,70 +359,47 @@ excecao(medico(A,B,C,D,E)) :- medico(A,X,Y,Z,J),
                               nulo(J).
 
 
-
 % -------------------------------------------------------------------------------------------------------------------------------
 % Conhecimento  imperfeito incerto
 
 
 %Para o utente de id 15, ninguém sabe a idade, mas sabe-se que não tem 20 anos
-
 utente(15,anabela,xIdade,guimaraes).
 -utente(15,anabela,20,guimaraes).
 
-
-
 % para o servico de id 20, ninguém sabe a a descrição, mas sabe-se que não é fisioterapia
-
 servico(20,xDescricao,hospital_braga, braga).
 -servico(20,fisioterapia,hospital_braga, braga).
 
 % ninguém sabe, para a consulta de id 10, a data em que foi realizada, mas sabe-se que não foi a 10-10-1998
-
 consulta(10,data(xDia,xMes,xAno),1,1,1,15).
 -consulta(10,data(10,10,1998),1,1,1,15).
 
-
 % para o medico de id 10, ninguém sabe a especialidade , mas sabe-se que não é radiografia
-
 medico(10,Jusue,30,xEspecialidade,hospital_braga).
 -medico(10,Jusue,30,radiografia,hospital_braga).
 
-
-
 % -------------------------------------------------------------------------------------------------------------------------------
-% Conhecimento  imperfeito impreciso
-
-
+% Conhecimento  Impreciso -------------------------------------------------------------
 
 % não se sabe se o utente de id 20 se chama mauricio ou anacleto
-
-utente(20,mauricio,20,braga).
-utente(20,anacleto,20,braga).
-
+excecao(utente(20,mauricio,20,braga)).
+excecao(utente(20,anacleto,20,braga)).
 
 % não se sabe se o servico de id 25 é disponibilizado no hospital_trofa_1 ou no hospital_trofa_2
-
-servico(25,tumografia,hospital_trofa_1,braga).
-servico(25,tumografia,hospital_trofa_2,porto).
-
+excecao(servico(25,tumografia,hospital_trofa_1,braga)).
+excecao(servico(25,tumografia,hospital_trofa_2,porto)).
 
 % não se sabe se a consulta de id 15 foi feita ao paciente 1 ou 2
-
-consulta(15,data(1,1,2019),1,15,1,30). 
-consulta(15,data(1,1,2019),2,15,1,30). 
-
+excecao(consulta(15,data(1,1,2019),1,15,1,30)). 
+excecao(consulta(15,data(1,1,2019),2,15,1,30)). 
 
 % não se sabe se o medico de id 15 tem 21 ou 22 anos
-
-medico(15,goncalo,21,fisioterapia,hospital_trofa_2).
-medico(15,goncalo,22,fisioterapia,hospital_trofa_2).
-
-
+excecao(medico(15,goncalo,21,fisioterapia,hospital_trofa_2)).
+excecao(medico(15,goncalo,22,fisioterapia,hospital_trofa_2)).
 
 % -------------------------------------------------------------------------------------------------------------------------------
-%Representação de conhecimento imperfeito interdito
-
-
+%Conhecimento Interdito -------------------------------------------------------------
 
 % utente: IdUt,Nome,Idade,Cidade
 % o utente de id 25 mora numa cidade que ninguém pode saber qual é.
@@ -503,17 +410,14 @@ utente(25,ana,23,xCidade).
                   comprimento(L,S),
                   S == 0).
 
-
-
 % servico: IdServ,Descrição,Instituição,Cidade
-%não é possível saber qual a Intituicao que prestou o servico de id 30
+%não é possível saber qual a Instituicao que prestou o servico de id 30
 
-servico(25,tumografia,xInstituicao,braga).
+servico(30,tumografia,xInstituicao,braga).
 
 +servico(A,B,C,D)::(solucoes(servico(A,B,C,D),servico(A,B,xInstituicao,D),L),
                   comprimento(L,S),
                   S == 0).
-
 
 % consulta: Id,Data,IdUt,IdServ,IdMedico,Custo
 % não é possivel saber o id do médico que prestou a consulta de id 20
@@ -524,10 +428,7 @@ consulta(20,data(1,1,2019),2,15,xIdMedico,30).
                         comprimento(L,S),
                         S == 0).
 
-
-
 % medico: Id,Nome, Idade, Especialidade, Instituição
-
 % não é possível saber a instituicao onde trabalha o médico de id 20
 
 medico(20,marco,47,oncologia,xInstituicao).
@@ -549,11 +450,80 @@ nulo(xCidade).
 nulo(xMedico).
 nulo(xInstituicao).
 
-
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Tópico 3
+%Tópico 3 -> Invariantes Estruturais e Referenciais
+
+%Invariantes Estruturais:
+
+% Observação: os invarientes Estruturais relacionados com a adição de conhecimento 
+%             interdito já se encontram desenvolvidos em cima juntamente com a respetiva
+%             demonstração de tentativa de adição desse conhecimento, que deverá ser 
+%             impossível neste caso.
+
+% nao permitir a insercao de uma excecao repetida
++excecao(T) :: ( solucoes(excecao(T),excecao(T),S),
+                 comprimento(S,N),
+                 N == 1 ).
+
+% nao permitir a remoção de uma excecao
+-excecao(T) :: ( no ).
+
+
+%para Utente
++utente(ID,_,_,_) :: (solucoes(ID,utente(ID,_,_,_),S),
+            comprimento(S,N),
+            N == 1
+            ).
+
+%para Servico
++servico(ID,_,_,_) :: (solucoes(ID,servico(ID,_,_,_),S),
+             comprimento(S,N),
+             N == 1
+             ).
+
+%para Medico
++medico(ID,_,_,_,_) :: (solucoes(ID,medico(ID,_,_,_,_),S),
+             comprimento(S,N),
+             N == 1
+             ).
+
+%para verificar se já existe um Id de Consulta igual
++consulta(ID,_,_,_,_,_) :: (solucoes(ID,(consulta(ID,_,_,_,_,_)), S),
+               comprimento(S,N),
+                 N == 1
+               ).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%Invariantes Referenciais:
+
+%para verificar se já existe o Utente e/ou Serviço
++consulta(ID,_,IDU,IDS,IM,_) :: (solucoes(ID, (utente(IDU,_,_,_), servico(IDS,_,I,_), medico(IM,_,_,_,I)), S),
+                comprimento(S,N),
+                N == 1
+                ).
+
+%Apenas se pode remover utentes caso não tenham consultas associadas
+-utente(Id,_,_,_) :: (solucoes( Id,(consulta(_,_,Id,_,_,_)),S ),
+            comprimento( S,N ), 
+            N == 0
+                      ).
+
+%Apenas se pode remover médicos caso não tenham consultas associadas
+-medico(Id,_,_,_) :: (solucoes( Id,(consulta(_,_,_,_,Id,_)),S ),
+            comprimento( S,N ), 
+            N == 0
+                      ).
+
+%Apenas se pode remover serviços caso não tenham consultas associadas
+-servico(Id,_,_,_) :: (solucoes( Id,(consulta(_,_,_,Id,_,_)),S ),
+             comprimento( S,N ), 
+             N == 0
+                       ).
+
+%Não convêm remover consultas por isso não o permitimos com este Invariante
+-consulta(_,_,_,_,_,_) :: (no).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
@@ -561,8 +531,168 @@ nulo(xInstituicao).
 %Tópico 4
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensao do meta-predicado remove : Lista -> {V,F}
+
+removeBC([H]) :- retract(H).
+removeBC([H|T]) :- retract(H), removeBC(T).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Tópico 5
+% evolucao do conhecimento
+%Extensao do predicado evolucao: Termo -> {V, F, D}
+
+
+evolucao( utente(A, B, C, D) ) :-  demo(utente(A, B, C, _), R),
+			                       R = desconhecido,
+								   solucoes(utente(A, E, F, G), utente(A, E, F, G), L),
+								   comprimento(L, S),
+								   S == 0,
+								   registar( excecao(utente(A, B, C, D)) ).
+% atualização dos dados
+evolucao( utente(A, B, C, D) ) :- demo(utente(A, B, C, D),
+								  R = desconhecido,
+								  solucoes(utente(A, H, I, J), utente(A, H, I, J), L),
+								  comprimento(L, S),
+								  S > 0,
+								  registar(utente(A, B, C, D)),
+								  removeBC(L).
+
+evolucao( utente(A, B, C, D) ) :- demo(utente(A, B, C, D), R),
+								  R = falso,										 
+								  registar(utente(A, B, C, D)).
+
+
+
+evolucao( servico(A, B, C, D) ) :-  demo(servico(A, B, _, D), R),
+									R = desconhecido,
+									solucoes(servico(A, E, F, G), servico(A, E, F, G), L),
+									comprimento(L, S),
+									S == 0,
+									registar( excecao(servico(A, B, C, D)) ).
+
+evolucao( servico(A, B, C, D) ) :-  demo(servico(A, B, C, D), R),
+								    R = desconhecido,
+									solucoes(servico(A, E, F, G), servico(A, E, F, G), L),
+									comprimento(L, S),
+									S > 0,
+								    registar(servico(A, B, C, D)),
+									removeBC(L).
+
+evolucao( servico(A, B, C, D) ) :- demo(servico(A, B, C, D), R),
+									 R = falso,										 
+									 registar(servico(A, B, C, D)).
+
+
+
+evolucao( consulta(A, B, C, D, E, F) ) :-  demo(consulta(A, B, C, D, _, F), R),
+										  R = desconhecido,
+										  solucoes(consulta(A, G, H, I, J, K), consulta(A, G, H, I, J, K), L),
+										  comprimento(L, S),
+										  S == 0,
+										  registar( excecao(utente(A, B, C, D, E, F)) ).
+
+evolucao( consulta(A, B, C, D, E, F) ) :- demo(consulta(A, B, C, D, E, F), R),
+										 R = desconhecido,
+										 solucoes(consulta(A, G, H, I, J, K), consulta(A, G, H, I, J, K), L),
+										 comprimento(L, S),
+										 S > 0,
+										 registar(consulta(A, B, C, D, E, F)),
+										 removeBC(L).
+
+evolucao( consulta(A, B, C, D, E, F) ) :- demo(consulta(A, B, C, D, E, F), R),
+										 R = falso,										 
+										 registar(consulta(A, B, C, D, E, F)).
+
+evolucao( excecao(Termo) ) :- registar(excecao(Termo)).
+
+-evolucao(T) :- demo(T,verdadeiro).
+
+
+% Extensao do predicado registar: #T -> {V,F}   
+registar( Termo ) :- (solucoes(Invariante, +Termo::Invariante,Lista),
+					 insercao(Termo),
+					 teste(Lista)).
+
+
+
+%PMF para o predicado registar
+-registar(Termo).
+
+
+
+% Remover utentes, prestadores e cuidados de saúde
+
+% Extensao do predicado remover: T -> {V,F,D}   
+
+
+remover( Termo ) :-	(solucoes(Invariante, -Termo::Invariante,Lista),
+					teste(Lista)),
+					remocao(Termo).
+
+-remover(Termo) :- excecao( Termo ),
+				   nao( Termo ).
+
+
+
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%Tópico 5 sistema de inferencia
+
+
+% Extensao do meta-predicado demoConjunto: Questao,Resposta -> {V,F}
+% este meta-predicado é pq o demo apenas consegue responder a questões isoladas, 
+% logo necessita-se de um predicado que faça a análise questão a questão, que é 
+% o demoConjunto, a resposta pode ser verdadeiro, falso, desconhecido
+
+demoConjunto(Q1/\Q2, R):- demoConjunto(Q2,R1),  %DISJUNÇÃO
+           demoConjunto(Q1,R2),
+           conjuncao(R1,R2,R).  % faz a conjunção das respostas anteriores
+
+demoConjunto(Q1\/Q2, R):- demoConjunto(Q2,R1),  %CONJUNÇÃO
+           demoConjunto(Q1,R2),
+           disjuncao(R1,R2,R).  % faz a disjunção das respostas anteriores
+
+demoConjunto(Q, R):- demo(Q,R).               %CASO normal, uma questão
+
+
+
+% Extensao do meta-predicado disjuncao: A , B , Resposta -> {V,F}
+
+% soluções possíveis entre o desconhecido e o verdadeiro
+disjuncao(desconhecido, verdadeiro, verdadeiro).
+disjuncao(verdadeiro, desconhecido, verdadeiro).
+
+% soluções possíveis entre o desconhecido e o falso
+disjuncao(falso, desconhecido, desconhecido).
+disjuncao(desconhecido, falso, desconhecido).
+
+% tabela de verdade tradicional para a disjunção
+disjuncao(verdadeiro, verdadeiro, verdadeiro).
+disjuncao(verdadeiro, falso, verdadeiro).
+disjuncao(falso, verdadeiro, verdadeiro).
+disjuncao(falso, falso, falso).
+
+% disjuncao do desconhecido
+disjuncao(desconhecido, desconhecido, desconhecido).
+
+% Extensao do meta-predicado conjuncao: A , B , Resposta -> {V,F}
+
+% assumiu-se que a sua conjuncao do elemento neutro da conjunção com desconhecido teria a resposta desconhecido
+conjuncao(verdadeiro, desconhecido, desconhecido). 
+conjuncao(desconhecido, verdadeiro, desconhecido).
+
+%assumiu-se que a sua conjuncao do elemento absorvente da conjunção com desconhecido teria a resposta falso
+conjuncao(falso, desconhecido, falso).
+conjuncao(desconhecido, falso, falso).
+
+% tabela de verdade tradicional para a conjunção
+conjuncao(verdadeiro, verdadeiro, verdadeiro).
+conjuncao(falso, falso, falso).
+conjuncao(falso, verdadeiro, falso).
+conjuncao(verdadeiro, falso, falso).
+
+% a conjunção de todos os valores de verdade desconhecido tem como resposta desconhecido
+conjuncao(desconhecido, desconhecido, desconhecido).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
