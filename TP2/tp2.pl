@@ -548,17 +548,17 @@ evolucao( utente(A, B, C, D) ) :-  demo(utente(A, B, C, _), R),
 								   S == 0,
 								   registar( excecao(utente(A, B, C, D)) ).
 % atualização dos dados
-evolucao( utente(A, B, C, D) ) :- demo(utente(A, B, C, D),
-								  R = desconhecido,
-								  solucoes(utente(A, H, I, J), utente(A, H, I, J), L),
-								  comprimento(L, S),
-								  S > 0,
-								  registar(utente(A, B, C, D)),
-								  removeBC(L).
+evolucao( utente(A, B, C, D) ) :-  demo(utente(A, B, C, D),
+								   R = desconhecido,
+								   solucoes(utente(A, H, I, J), utente(A, H, I, J), L),
+								   comprimento(L, S),
+								   S > 0,
+								   registar(utente(A, B, C, D)),
+								   removeBC(L).
 
-evolucao( utente(A, B, C, D) ) :- demo(utente(A, B, C, D), R),
-								  R = falso,										 
-								  registar(utente(A, B, C, D)).
+evolucao( utente(A, B, C, D) ) :-  demo(utente(A, B, C, D), R),
+								   R = falso,										 
+								   registar(utente(A, B, C, D)).
 
 
 
@@ -577,30 +577,30 @@ evolucao( servico(A, B, C, D) ) :-  demo(servico(A, B, C, D), R),
 								    registar(servico(A, B, C, D)),
 									removeBC(L).
 
-evolucao( servico(A, B, C, D) ) :- demo(servico(A, B, C, D), R),
-									 R = falso,										 
-									 registar(servico(A, B, C, D)).
+evolucao( servico(A, B, C, D) ) :-  demo(servico(A, B, C, D), R),
+									R = falso,										 
+									registar(servico(A, B, C, D)).
 
 
 
 evolucao( consulta(A, B, C, D, E, F) ) :-  demo(consulta(A, B, C, D, _, F), R),
-										  R = desconhecido,
-										  solucoes(consulta(A, G, H, I, J, K), consulta(A, G, H, I, J, K), L),
-										  comprimento(L, S),
-										  S == 0,
-										  registar( excecao(utente(A, B, C, D, E, F)) ).
+									  	   R = desconhecido,
+										   solucoes(consulta(A, G, H, I, J, K), consulta(A, G, H, I, J, K), L),
+										   comprimento(L, S),
+										   S == 0,
+										   registar( excecao(utente(A, B, C, D, E, F)) ).
 
-evolucao( consulta(A, B, C, D, E, F) ) :- demo(consulta(A, B, C, D, E, F), R),
-										 R = desconhecido,
-										 solucoes(consulta(A, G, H, I, J, K), consulta(A, G, H, I, J, K), L),
-										 comprimento(L, S),
-										 S > 0,
-										 registar(consulta(A, B, C, D, E, F)),
-										 removeBC(L).
+evolucao( consulta(A, B, C, D, E, F) ) :-  demo(consulta(A, B, C, D, E, F), R),
+										   R = desconhecido,
+									  	   solucoes(consulta(A, G, H, I, J, K), consulta(A, G, H, I, J, K), L),
+										   comprimento(L, S),
+										   S > 0,
+										   registar(consulta(A, B, C, D, E, F)),
+										   removeBC(L).
 
-evolucao( consulta(A, B, C, D, E, F) ) :- demo(consulta(A, B, C, D, E, F), R),
-										 R = falso,										 
-										 registar(consulta(A, B, C, D, E, F)).
+evolucao( consulta(A, B, C, D, E, F) ) :-  demo(consulta(A, B, C, D, E, F), R),
+										   R = falso,										 
+										   registar(consulta(A, B, C, D, E, F)).
 
 evolucao( excecao(Termo) ) :- registar(excecao(Termo)).
 
