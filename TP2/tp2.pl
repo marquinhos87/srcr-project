@@ -87,11 +87,11 @@ involucao(Termo) :- solucoes(I, -Termo::I,Lista),
 					teste(Lista).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Extensao do meta-predicado si: Questao,Resposta -> {V,F}
+% Extensao do meta-predicado demo: Questao , Resposta -> {V,F}
 %                            Resposta = {verdadeiro,falso,desconhecido}
-si(Questao,verdadeiro) :- Questao.
-si(Questao,falso) :- -Questao.
-si(Questao,desconhecido) :- nao(Questao), nao(-Questao).
+demo(Questao,verdadeiro) :- Questao.
+demo(Questao,falso) :- -Questao.
+demo(Questao,desconhecido) :- nao(Questao), nao(-Questao).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do meta-predicado nao: Questao -> {V,F}
@@ -525,6 +525,45 @@ nulo(xInstituicao).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Tópico 5
+%Tópico 5 sistema de inferencia
+
+% Extensao do meta-predicado disjuncao: A , B , Resposta -> {V,F}
+
+% soluções possíveis entre o desconhecido e o verdadeiro
+disjuncao(desconhecido, verdadeiro, verdadeiro).
+disjuncao(verdadeiro, desconhecido, verdadeiro).
+
+% soluções possíveis entre o desconhecido e o falso
+disjuncao(falso, desconhecido, desconhecido).
+disjuncao(desconhecido, falso, desconhecido).
+
+% tabela de verdade tradicional para a disjunção
+disjuncao(verdadeiro, verdadeiro, verdadeiro).
+disjuncao(verdadeiro, falso, verdadeiro).
+disjuncao(falso, verdadeiro, verdadeiro).
+disjuncao(falso, falso, falso).
+
+% disjuncao do desconhecido
+disjuncao(desconhecido, desconhecido, desconhecido).
+
+% Extensao do meta-predicado conjuncao: A , B , Resposta -> {V,F}
+
+% assumiu-se que a sua conjuncao do elemento neutro da conjunção com desconhecido teria a resposta desconhecido
+conjuncao(verdadeiro, desconhecido, desconhecido). 
+conjuncao(desconhecido, verdadeiro, desconhecido).
+
+%assumiu-se que a sua conjuncao do elemento absorvente da conjunção com desconhecido teria a resposta falso
+conjuncao(falso, desconhecido, falso).
+conjuncao(desconhecido, falso, falso).
+
+% tabela de verdade tradicional para a conjunção
+conjuncao(verdadeiro, verdadeiro, verdadeiro).
+conjuncao(falso, falso, falso).
+conjuncao(falso, verdadeiro, falso).
+conjuncao(verdadeiro, falso, falso).
+
+% a conjunção de todos os valores de verdade desconhecido tem como resposta desconhecido
+conjuncao(desconhecido, desconhecido, desconhecido).
+
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
