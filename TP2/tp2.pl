@@ -418,8 +418,8 @@ evolucao( utente(A, B, C, D) ) :-  demo(utente(A, B, C, D),R),
 								   solucoes(utente(A, E, F, G), utente(A, E, F, G), L),
 								   comprimento(L, S),
 								   S > 0,
-								   removeBC(L),
-								   registar(utente(A, B, C, D)).
+								   registar(utente(A, B, C, D)),
+								   removeBC(L).
 
 evolucao( utente(A, B, C, D) ) :-  demo(utente(A, B, C, D), R),
 								   R = falso,										 
@@ -437,8 +437,8 @@ evolucao( servico(A, B, C, D) ) :-  demo(servico(A, B, C, D), R),
 									solucoes(servico(A, E, F, G), servico(A, E, F, G), L),
 									comprimento(L, S),
 									S > 0,
-									removeBC(L),
-								    registar(servico(A, B, C, D)).
+								    registar(servico(A, B, C, D)),
+									removeBC(L).
 
 evolucao( servico(A, B, C, D) ) :-  demo(servico(A, B, C, D), R),
 									R = falso,										 
@@ -456,8 +456,8 @@ evolucao( consulta(A, B, C, D, E, F) ) :-  demo(consulta(A, B, C, D, E, F), R),
 									  	   solucoes(consulta(A, G, H, I, J, K), consulta(A, G, H, I, J, K), L),
 										   comprimento(L, S),
 										   S > 0,
-										   removeBC(L),
-										   registar(consulta(A, B, C, D, E, F)).
+										   registar(consulta(A, B, C, D, E, F)),
+										   removeBC(L).
 
 evolucao( consulta(A, B, C, D, E, F) ) :-  demo(consulta(A, B, C, D, E, F), R),
 										   R = falso,										 
