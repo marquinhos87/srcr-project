@@ -29,7 +29,7 @@
 
 :- op(900,xfy,'::').
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%PODEM NAO SER NECESSARIAS ALGUMAS
+
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Funções auxiliares
 
@@ -94,14 +94,15 @@ si(Questao,desconhecido) :- nao(Questao), nao(-Questao).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do meta-predicado nao: Questao -> {V,F}
-
 nao(Questao) :- Questao, !, fail.
 nao(Questao).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Tópico 1
+%Tópico 1 -> Conhecimento Positivo e Negativo
 
+% Conhecimento Positivo
 %Extenção do predicado utente: IdUt,Nome,Idade,Cidade -> {V,F,D}
 utente(1,joao,22,lisboa).
 utente(2,carlos,15,beja).
@@ -144,21 +145,32 @@ medico(2,joao,35,radiologia,hospital_porto).
 medico(3,pedro,50,ginecologia,hospital_coimbra).
 medico(4,joaquim, 44,cirurgia,hospital_braga).
 
+% Conhecimento Negativo
+%Extenção do predicado utente: IdUt,Nome,Idade,Cidade -> {V,F,D}
+-utente(11,nuno,33,porto).
+-utente(12,pedro,70,coimbra).
 
+%Extenção do predicado servico: IdServ,Descrição,Instituição,Cidade -> {V,F,D}
+-servico(15,dermatologia,hospital_coimbra,coimbra).
+-servico(16,rinoplastia, hospital_lisboa, lisboa).
 
+%Extenção do predicado consulta: Id,Data,IdUt,IdServ,IdMedico, Custo -> {V,F,D}
+-consulta(7,data(15,8,2019),11,15,6,45).
+-consulta(8,data(1,12,2017),12,16,5,50).
+
+%Extenção do predicado medico: Id,Nome, Idade, Especialidade, Instituição -> {V,F,D}
+-medico(5,joana,50,radiografia,hospital_trofa_1).
+-medico(6,miguel, 44,cirurgia,hospital_porto).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Tópico 2 -> Conhecimento Imperfeito
 
-
-
 % Conhecimento Desconhecido -----------------------------------------------------------------------
-
-
 
 % utente: IdUt,Nome,Idade,Cidade
 % possíveis valores desconhecidos : Nome,Idade,Cidade
-
 
 excecao(utente(A,B,C,D)) :- utente(A,X,C,D),
                             nulo(X).
@@ -186,11 +198,8 @@ excecao(utente(A,B,C,D)) :- utente(A,X,Y,Z),
                             nulo(Y),
                             nulo(Z).
 
-
-
 % servico: IdServ,Descrição,Instituição,Cidade
 % possíveis valores desconhecidos : Descrição,Instituição,Cidade
-
 
 excecao(servico(A,B,C,D)) :- servico(A,X,C,D),
                              nulo(X).
@@ -201,32 +210,25 @@ excecao(servico(A,B,C,D)) :- servico(A,B,X,D),
 excecao(servico(A,B,C,D)) :- servico(A,B,C,X),
                              nulo(X).
 
-
 excecao(servico(A,B,C,D)) :- servico(A,X,Y,D),
                              nulo(X),
                              nulo(Y).
-
 
 excecao(servico(A,B,C,D)) :- servico(A,X,C,Y),
                              nulo(X),
                              nulo(Y).
 
-
 excecao(servico(A,B,C,D)) :- servico(A,B,X,Y),
                              nulo(X),
                              nulo(Y).
-
 
 excecao(servico(A,B,C,D)) :- servico(A,X,Y,Z),
                              nulo(X),
                              nulo(Y),
                              nulo(Z).
 
-
-
 % consulta: Id,Data,IdUt,IdServ,IdMedico,Custo
 % possíveis valores desconhecidos: Data,IdUt,IdServ,IdMedico,Custo
-
 
 excecao(consulta(A,B,C,D,E,F)) :- consulta(A,X,C,D,E,F),
                                   nulo(X).
@@ -289,11 +291,8 @@ excecao(consulta(A,B,C,D,E,F)) :- consulta(A,B,C,D,X,Y),
                                   nulo(X),
                                   nulo(Y).
 
-
-
 % medico: Id,Nome, Idade, Especialidade, Instituição
 %possíveis valores desconhecidos: Nome,Idade,Especialidade,Instituição
-
 
 excecao(medico(A,B,C,D,E)) :- medico(A,X,C,D,E),
                               nulo(X).
@@ -357,72 +356,43 @@ excecao(medico(A,B,C,D,E)) :- medico(A,X,Y,Z,J),
                               nulo(Z),
                               nulo(J).
 
-
-
-% Conhecimento  imperfeito incerto -------------------------------------------------------------
-
-
+% Conhecimento  Incerto -------------------------------------------------------------
 
 %Para o utente de id 15, ninguém sabe a idade, mas sabe-se que não tem 20 anos
-
 utente(15,anabela,xIdade,guimaraes).
 -utente(15,anabela,20,guimaraes).
 
-
-
 % para o servico de id 20, ninguém sabe a a descrição, mas sabe-se que não é fisioterapia
-
 servico(20,xDescricao,hospital_braga, braga).
 -servico(20,fisioterapia,hospital_braga, braga).
 
-
 % ninguém sabe, para a consulta de id 10, a data em que foi realizada, mas sabe-se que não foi a 10-10-1998
-
 consulta(10,data(xDia,xMes,xAno),1,1,1,15).
 -consulta(10,data(10,10,1998),1,1,1,15).
 
-
 % para o medico de id 10, ninguém sabe a especialidade , mas sabe-se que não é radiografia
-
 medico(10,Jusue,30,xEspecialidade,hospital_braga).
 -medico(10,Jusue,30,radiografia,hospital_braga).
 
-
-
-% -------------------------------------------------------------------------------------------------------------------------------
-% Conhecimento  imperfeito impreciso
-
-
+% Conhecimento  Impreciso -------------------------------------------------------------
 
 % não se sabe se o utente de id 20 se chama mauricio ou anacleto
-
 excecao(utente(20,mauricio,20,braga)).
 excecao(utente(20,anacleto,20,braga)).
 
-
 % não se sabe se o servico de id 25 é disponibilizado no hospital_trofa_1 ou no hospital_trofa_2
-
 excecao(servico(25,tumografia,hospital_trofa_1,braga)).
 excecao(servico(25,tumografia,hospital_trofa_2,porto)).
 
-
 % não se sabe se a consulta de id 15 foi feita ao paciente 1 ou 2
-
 excecao(consulta(15,data(1,1,2019),1,15,1,30)). 
 excecao(consulta(15,data(1,1,2019),2,15,1,30)). 
 
-
 % não se sabe se o medico de id 15 tem 21 ou 22 anos
-
 excecao(medico(15,goncalo,21,fisioterapia,hospital_trofa_2)).
 excecao(medico(15,goncalo,22,fisioterapia,hospital_trofa_2)).
 
-
-
-% -------------------------------------------------------------------------------------------------------------------------------
-%Representação de conhecimento imperfeito interdito
-
-
+%Conhecimento Interdito -------------------------------------------------------------
 
 % utente: IdUt,Nome,Idade,Cidade
 % o utente de id 25 mora numa cidade que ninguém pode saber qual é.
@@ -433,17 +403,14 @@ utente(25,ana,23,xCidade).
                   comprimento(L,S),
                   S == 0).
 
-
-
 % servico: IdServ,Descrição,Instituição,Cidade
-%não é possível saber qual a Intituicao que prestou o servico de id 30
+%não é possível saber qual a Instituicao que prestou o servico de id 30
 
-servico(25,tumografia,xInstituicao,braga).
+servico(30,tumografia,xInstituicao,braga).
 
 +servico(A,B,C,D)::(solucoes(servico(A,B,C,D),servico(A,B,xInstituicao,D),L),
                   comprimento(L,S),
                   S == 0).
-
 
 % consulta: Id,Data,IdUt,IdServ,IdMedico,Custo
 % não é possivel saber o id do médico que prestou a consulta de id 20
@@ -454,10 +421,7 @@ consulta(20,data(1,1,2019),2,15,xIdMedico,30).
                         comprimento(L,S),
                         S == 0).
 
-
-
 % medico: Id,Nome, Idade, Especialidade, Instituição
-
 % não é possível saber a instituicao onde trabalha o médico de id 20
 
 medico(20,marco,47,oncologia,xInstituicao).
@@ -465,8 +429,6 @@ medico(20,marco,47,oncologia,xInstituicao).
 +medico(A,B,C,D)::(solucoes(medico(A,B,C,D),medico(A,B,C,xInstituicao),L),
                   comprimento(L,S),
                   S == 0).
-
-
 
 %Representação do meta-predicado nulo : valor -> {V,F}
 
@@ -478,15 +440,10 @@ nulo(xCidade).
 nulo(xMedico).
 nulo(xInstituicao).
 
-
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Tópico 3
-
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%Invariantes Estruturais: 
-
+%Tópico 3 -> Invariantes Estruturais e Referenciais
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Invariantes Estruturais:
@@ -559,11 +516,14 @@ nulo(xInstituicao).
 %Não convêm remover consultas por isso não o permitimos com este Invariante
 -consulta(_,_,_,_,_,_) :: (no).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Tópico 4
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Tópico 5
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
